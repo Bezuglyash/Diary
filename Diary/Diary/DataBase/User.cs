@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace Diary
+namespace Diary.DataBase
 {
     class User
     {
@@ -11,8 +11,9 @@ namespace Diary
         public string Name { get; set; }
 
         [MaxLength(4)]
-        public int Password { get; set; }
+        public int? Password { get; set; }
 
-        public bool IsHavePassword { get; set; }
+        [NotNull]
+        public int IsHavePassword { get; set; }
     }
 }
