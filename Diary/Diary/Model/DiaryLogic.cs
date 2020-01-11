@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Diary.Model
 {
-    class DiaryLogic : ObservableObject
+    class DiaryLogic : ViewModelBase
     {
         private const string NAME_DATA_BASE = "Diary.db";
         private SQLiteConnection dataBase;

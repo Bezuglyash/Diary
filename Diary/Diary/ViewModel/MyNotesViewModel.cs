@@ -12,6 +12,8 @@ namespace Diary.ViewModel
         private NotesLogic notesLogic;
         private ImportantDatesLogic importantDatesLogic;
         private NewNoteViewModel newNoteViewModel;
+        private AllNotesViewModel allNotesViewModel;
+        private NewImportantDateViewModel newImportantDateViewModel;
         private bool isClose;
 
         public MyNotesViewModel() { }
@@ -20,27 +22,25 @@ namespace Diary.ViewModel
         {
             this.notesLogic = notesLogic;
             this.importantDatesLogic = importantDatesLogic;
-            NotesLogic = notesLogic;
-            ImportantDatesLogic = importantDatesLogic;
+            NotesLogic = this.notesLogic;
+            ImportantDatesLogic = this.importantDatesLogic;
         }
 
-        public NotesLogic NotesLogic
-        {
-            get { return notesLogic; }
-            set
-            {
-                notesLogic = value;
-                RaisePropertyChanged("NumberOfNotes");
-            }
-        }
+        public NotesLogic NotesLogic { get; set; }
 
-        public ImportantDatesLogic ImportantDatesLogic
+        public ImportantDatesLogic ImportantDatesLogic { get; set; }
+
+        public ICommand ViewExisting
         {
-            get { return importantDatesLogic; }
-            set
+            get
             {
-                importantDatesLogic = value;
-                RaisePropertyChanged("NumberOfDates");
+                return new RelayCommand(() =>
+                {
+                    allNotesViewModel = new AllNotesViewModel(notesLogic);
+                    AddOrViewExisting = new AllNotesView();
+                    IsClose = false;
+                    AddOrViewExisting.DataContext = allNotesViewModel;
+                });
             }
         }
 
@@ -52,9 +52,8 @@ namespace Diary.ViewModel
                 {
                     newNoteViewModel = new NewNoteViewModel(notesLogic);
                     IsClose = false;
-                    Add = new NewNoteView();
-                    Add.DataContext = newNoteViewModel;
-                    //notesLogic.AddNewNote("1", "2", "3");
+                    AddOrViewExisting = new NewNoteView();
+                    AddOrViewExisting.DataContext = newNoteViewModel;
                 });
             }
         }
@@ -65,12 +64,15 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    importantDatesLogic.AddNewEvent("1", "2", 1);
+                    newImportantDateViewModel = new NewImportantDateViewModel(importantDatesLogic);
+                    IsClose = false;
+                    AddOrViewExisting = new NewImportantDateView();
+                    AddOrViewExisting.DataContext = newImportantDateViewModel;
                 });
             }
         }
 
-        public FrameworkElement Add { get; set; }
+        public FrameworkElement AddOrViewExisting { get; set; }
 
         public bool IsClose 
         {
@@ -81,6 +83,10 @@ namespace Diary.ViewModel
                 if (newNoteViewModel != null)
                 {
                     newNoteViewModel.IsClose = isClose;
+                }
+                else if (allNotesViewModel != null)
+                {
+                    allNotesViewModel.IsClose = isClose;
                 }
             }
         }

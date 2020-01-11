@@ -2,9 +2,9 @@
 
 namespace Diary.View
 {
-    public partial class NewNoteView : UserControl
+    public partial class EditNoteView : UserControl
     {
-        public NewNoteView()
+        public EditNoteView()
         {
             InitializeComponent();
         }

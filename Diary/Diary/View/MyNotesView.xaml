@@ -17,7 +17,7 @@
             <RowDefinition Height="0*"></RowDefinition>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Focusable="False" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="0" Background="BlanchedAlmond" Margin="0,0,-2,0">
+        <Button Focusable="False" Command="{Binding ViewExisting}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="0" Background="BlanchedAlmond" Margin="0,0,-2,0">
             <StackPanel Orientation="Vertical">
                 <TextBlock DockPanel.Dock="Top" Text="Записи" FontSize="19" HorizontalAlignment="Center"/>
                 <DockPanel HorizontalAlignment="Center">
@@ -35,16 +35,16 @@
                 </DockPanel>
             </StackPanel>
         </Button>
-        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewNote}" HorizontalAlignment="Stretch" Margin="630,0,-2,1" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Height="54">
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewNote}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Height="55">
             <Button.ToolTip>
                 Создать новую запись
             </Button.ToolTip>
         </Button>
-        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,1" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="1" Height="54" Grid.RowSpan="2">
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="1" Height="55" Grid.RowSpan="2">
             <Button.ToolTip>
                 Создать новую запись
             </Button.ToolTip>
         </Button>
-        <ContentControl Focusable="False" Panel.ZIndex="0" Grid.RowSpan="4" Content="{Binding Add}" Height="644" VerticalAlignment="Top"/>
+        <ContentControl Focusable="False" Panel.ZIndex="0" Grid.RowSpan="4" Content="{Binding AddOrViewExisting}" Height="644" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

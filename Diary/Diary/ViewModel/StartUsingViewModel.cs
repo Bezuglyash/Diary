@@ -1,4 +1,5 @@
-﻿using Diary.Model;
+﻿using Diary.DataBase;
+using Diary.Model;
 using Diary.View;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -109,19 +110,26 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    if (UserName.Length != 0)
+                    if (UserName != null)
                     {
-                        if (UserName[UserName.Length - 1] == ' ')
+                        if (UserName.Length != 0)
                         {
-                            UserName = UserName.Remove(UserName.Length - 1, 1);
+                            if (UserName[UserName.Length - 1] == ' ')
+                            {
+                                UserName = UserName.Remove(UserName.Length - 1, 1);
+                            }
+                            TextHello = "Привет, " + UserName + "!\nВы можете установить пароль (рекомендуется) или продолжить без пароля!";
+                            Content = "Продолжить без пароля";
+                            diaryLogic.NameUser = UserName;
+                            IsEnabled = true;
+                            PasswordControl = new PasswordView();
+                            PasswordControl.DataContext = new PasswordViewModel(diaryLogic);
+                            CheckAsync();
                         }
-                        TextHello = "Привет, " + UserName + "!\nВы можете установить пароль (рекомендуется) или продолжить без пароля!";
-                        Content = "Продолжить без пароля";
-                        diaryLogic.NameUser = UserName;
-                        IsEnabled = true;
-                        PasswordControl = new PasswordView();
-                        PasswordControl.DataContext = new PasswordViewModel(diaryLogic);
-                        CheckAsync();
+                        else
+                        {
+                            Color = "#FF7F50";
+                        }
                     }
                     else
                     {

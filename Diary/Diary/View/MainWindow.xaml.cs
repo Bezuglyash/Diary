@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Diary
+namespace Diary.View
 {
     public partial class MainWindow : Window
     {
