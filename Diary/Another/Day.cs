@@ -1,38 +1,37 @@
-﻿using GalaSoft.MvvmLight;
-using System;
+﻿using System;
 using System.Collections;
 
 namespace Diary.Another
 {
-    enum Months
+    class Day : IDate
     {
-        Января = 1,
-        Февраля = 2,
-        Марта = 3,
-        Апреля = 4,
-        Мая = 5,
-        Июня = 6,
-        Июля = 7,
-        Августа = 8,
-        Сентября = 9,
-        Октября = 10,
-        Ноября = 11,
-        Декабря = 12
-    }
+        enum Months
+        {
+            Января = 1,
+            Февраля = 2,
+            Марта = 3,
+            Апреля = 4,
+            Мая = 5,
+            Июня = 6,
+            Июля = 7,
+            Августа = 8,
+            Сентября = 9,
+            Октября = 10,
+            Ноября = 11,
+            Декабря = 12
+        }
 
-    enum DayOfTheWeek
-    {
-        Понедельник = 1,
-        Вторник = 2,
-        Среда = 3,
-        Четверг = 4,
-        Пятница = 5,
-        Суббота = 6,
-        Воскресенье = 0
-    }
+        enum DayOfTheWeek
+        {
+            Понедельник = 1,
+            Вторник = 2,
+            Среда = 3,
+            Четверг = 4,
+            Пятница = 5,
+            Суббота = 6,
+            Воскресенье = 0
+        }
 
-    class Day : ViewModelBase
-    {
         private Hashtable numberOfDays;
         private Hashtable indexOfMonths;
         private Hashtable numberOfMonths;
@@ -82,7 +81,8 @@ namespace Diary.Another
                 { "Июля", "07" },
                 { "Августа", "08" },
                 { "Сентября", "09" },
-                { "Октября", "11" },
+                { "Октября", "10" },
+                { "Ноябрь", "11" },
                 { "Декабря", "12" }
             };
         }
@@ -135,7 +135,7 @@ namespace Diary.Another
             return numberOfMonths[nameOfMonth].ToString();
         }
 
-        private bool IsThisLeapYear(int year)
+        public bool IsThisLeapYear(int year)
         {
             if (Convert.ToInt32(year.ToString().Remove(0, 2)) % 4 == 0)
             {

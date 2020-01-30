@@ -10,7 +10,7 @@ namespace Diary.DataBase
         [MaxLength(10), NotNull]
         public string Date { get; set; }
 
-        [NotNull]
+        [MaxLength(41), NotNull]
         public string Event { get; set; }
 
         [NotNull]

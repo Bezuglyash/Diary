@@ -193,7 +193,7 @@
             Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
             IsTabStop="False"
             Padding="7, 1"
-            Background="LightGoldenrodYellow" 
+            Background="{Binding Color}" 
             Height="30" 
             Margin="91,49,119,0" 
             TextWrapping="Wrap" 
@@ -228,7 +228,7 @@
         </TextBlock>
         <CheckBox 
             x:Name="Check"
-            IsChecked="{Binding IsAnnually}"
+            IsChecked="{Binding IsAnnually, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
             Focusable="False"
             Content="Повторять ежегодно"
             HorizontalContentAlignment="Center"
@@ -352,6 +352,7 @@
                         Height="98"/>
                 </Border>
             </StackPanel>
+            <Image Margin="0,0,0,-687" Source="/Diary;component/Image3.png" Stretch="Fill" Width="1920"/>
         </DockPanel>
         <Button 
             Command="{Binding Cancel}"
@@ -385,13 +386,6 @@
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="3"/>
-                </Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Text, ElementName=Event}" Value="">
-                            <Setter Property="IsEnabled" Value="False"/>
-                        </DataTrigger>
-                    </Style.Triggers>
                 </Style>
             </Button.Resources>
             <DockPanel Height="54">

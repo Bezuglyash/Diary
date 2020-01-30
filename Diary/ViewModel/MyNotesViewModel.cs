@@ -104,6 +104,10 @@ namespace Diary.ViewModel
                 {
                     allNotesViewModel.IsClose = isClose;
                 }
+                else if (allImportantDatesViewModel != null)
+                {
+                    allImportantDatesViewModel.IsClose = isClose;
+                }
             }
         }
     }

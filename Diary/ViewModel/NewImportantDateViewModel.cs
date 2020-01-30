@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
-using System.Windows.Input;
+using System.Threading.Tasks;
 using System.Windows.Threading;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Diary.ViewModel
 {
@@ -18,6 +20,7 @@ namespace Diary.ViewModel
         private int selectedDay;
         private string selectedMonth;
         private int selectedYear;
+        private string text;
         private Dispatcher dispatcher;
 
         public NewImportantDateViewModel() { }
@@ -25,38 +28,52 @@ namespace Diary.ViewModel
         public NewImportantDateViewModel(ImportantDatesLogic importantDatesLogic)
         {
             this.importantDatesLogic = importantDatesLogic;
-            Condition = "Visible";
-            day = new Day();
-            Months = new List<string>()
-            {
-                "Января",
-                "Февраля",
-                "Марта",
-                "Апреля",
-                "Мая",
-                "Июня",
-                "Июля",
-                "Августа",
-                "Сентября",
-                "Октября",
-                "Ноября",
-                "Декабря"
-            };
-            Years = new LinkedList<int>();
-            for (int i = 1900; i <= 3128; i++)
-            {
-                Years.AddLast(i);
-            }
+            Overall();
             selectedMonth = day.GetMonthNow();
             selectedYear = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
-            Days = new ObservableCollection<int>();
             int count = day.GetNumberOfDaysInThisMonth(selectedMonth, selectedYear);
             for (int i = 1; i <= count; i++)
             {
                 Days.Add(i);
             }
             SelectedDay = Convert.ToInt32(DateTime.Now.ToString("dd"));
-            dispatcher = Dispatcher.CurrentDispatcher;
+        }
+
+        public NewImportantDateViewModel(ImportantDatesLogic importantDatesLogic, int numberOfDay, string month, int year)
+        {
+            this.importantDatesLogic = importantDatesLogic;
+            Overall();
+            selectedMonth = month;
+            selectedYear = year;
+            int count = day.GetNumberOfDaysInThisMonth(month, year);
+            for (int i = 1; i <= count; i++)
+            {
+                Days.Add(i);
+            }
+            SelectedDay = numberOfDay;
+        }
+
+        public NewImportantDateViewModel(ImportantDatesLogic importantDatesLogic, int numberOfDay, string month, int year, string eventText, int annually)
+        {
+            this.importantDatesLogic = importantDatesLogic;
+            Overall();
+            selectedMonth = month;
+            selectedYear = year;
+            int count = day.GetNumberOfDaysInThisMonth(month, year);
+            for (int i = 1; i <= count; i++)
+            {
+                Days.Add(i);
+            }
+            SelectedDay = numberOfDay;
+            Text = eventText;
+            if (annually == 1)
+            {
+                IsAnnually = true;
+            }
+            else
+            {
+                IsAnnually = false;
+            }
         }
 
         public string Condition { get; set; }
@@ -111,7 +128,17 @@ namespace Diary.ViewModel
             }
         }
 
-        public string Text { get; set; }
+        public string Text
+        {
+            get { return text; }
+            set
+            {
+                if (value.Length <= 41)
+                {
+                    text = value;
+                }
+            }
+        }
 
         public bool IsAnnually { get; set; }
 
@@ -134,21 +161,31 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    Condition = "Collapsed";
-                    Thread thread = new Thread(new ParameterizedThreadStart(AddNewDate));
-                    int annually;
-                    if (IsAnnually)
+                    if (Text == null || Text.Length == 0)
                     {
-                        annually = 1;
+                        BackgroundErrorAsync();
                     }
                     else
                     {
-                        annually = 0;
+                        Thread thread = new Thread(new ParameterizedThreadStart(AddNewDate));
+                        int annually;
+                        if (IsAnnually)
+                        {
+                            annually = 1;
+                        }
+                        else
+                        {
+                            annually = 0;
+                        }
+                        importantDatesLogic.AddToList(Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), Convert.ToInt32(annually));
+                        Condition = "Collapsed";
+                        thread.Start(annually);
                     }
-                    thread.Start(annually);
                 });
             }
         }
+
+        public Brush Color { get; set; }
 
         private void UpdateDays()
         {
@@ -174,8 +211,56 @@ namespace Diary.ViewModel
         {
             dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
             {
-                importantDatesLogic.AddNewEvent(Text, SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), Convert.ToInt32(annually));
+                importantDatesLogic.AddNewEvent(Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), Convert.ToInt32(annually));
             });
+        }
+
+        async private void BackgroundErrorAsync()
+        {
+            Color = (Brush)new BrushConverter().ConvertFromString("#FF7F50");
+            await Task.Delay(328);
+            Color = (Brush)new BrushConverter().ConvertFromString("LightGoldenrodYellow");
+        }
+
+        private string ZeroOrNull()
+        {
+            if (SelectedDay < 10)
+            {
+                return "0";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        private void Overall()
+        {
+            Condition = "Visible";
+            day = new Day();
+            Months = new List<string>()
+            {
+                "Января",
+                "Февраля",
+                "Марта",
+                "Апреля",
+                "Мая",
+                "Июня",
+                "Июля",
+                "Августа",
+                "Сентября",
+                "Октября",
+                "Ноября",
+                "Декабря"
+            };
+            Years = new LinkedList<int>();
+            for (int i = 1900; i <= 2528; i++)
+            {
+                Years.AddLast(i);
+            }
+            Days = new ObservableCollection<int>();
+            dispatcher = Dispatcher.CurrentDispatcher;
+            Color = (Brush)new BrushConverter().ConvertFromString("LightGoldenrodYellow");
         }
     }
 }

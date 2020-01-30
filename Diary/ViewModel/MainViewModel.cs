@@ -128,7 +128,7 @@ namespace Diary.ViewModel
             }
         }
 
-        async void WaitingAsync()
+        async private void WaitingAsync()
         {
             await Task.Run(() =>
             {
@@ -137,7 +137,7 @@ namespace Diary.ViewModel
             });
         }
 
-        public void CreateLogics()
+        private void CreateLogics()
         {
             notesLogic = new NotesLogic(diaryLogic.GetDataBase());
             importantDatesLogic = new ImportantDatesLogic(diaryLogic.GetDataBase());
