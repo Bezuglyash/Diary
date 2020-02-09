@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="Diary.View.PlannerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Diary.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignWidth="679" Focusable="False" d:DesignHeight="644" Background="FloralWhite">
+    <UserControl.DataContext>
+        <vm:PlannerViewModel/>
+    </UserControl.DataContext>
+
+    <Grid HorizontalAlignment="Right" Width="685">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"></RowDefinition>
+            <RowDefinition Height="55"></RowDefinition>
+            <RowDefinition Height="55"></RowDefinition>
+            <RowDefinition Height="0*"></RowDefinition>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button Focusable="False" Command="{Binding ViewTimetables}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="0" Background="BlanchedAlmond" Margin="1,0,-1,0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock DockPanel.Dock="Top" Text="Расписание на день" FontSize="19" HorizontalAlignment="Center"/>
+                <DockPanel HorizontalAlignment="Center">
+                    <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding TimetableForTheDaysLogic.NumberOfCases, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
+                </DockPanel>
+            </StackPanel>
+        </Button>
+        <Button Focusable="False" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="1" Background="BlanchedAlmond" Margin="1,0,-1,0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock DockPanel.Dock="Top" Text="Треккер привычек" FontSize="19" HorizontalAlignment="Center"/>
+                <DockPanel HorizontalAlignment="Center">
+                    <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="0" FontSize="12" HorizontalAlignment="Center"/>
+                </DockPanel>
+            </StackPanel>
+        </Button>
+        <Button Focusable="False" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="2" Background="BlanchedAlmond" Margin="1,0,-1,0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock DockPanel.Dock="Top" Text="Цели" FontSize="19" HorizontalAlignment="Center"/>
+                <DockPanel HorizontalAlignment="Center">
+                    <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="0" FontSize="12" HorizontalAlignment="Center"/>
+                </DockPanel>
+            </StackPanel>
+        </Button>
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewTimetable}" HorizontalAlignment="Stretch" Margin="630,0,-2,1" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="0" Height="54">
+            <Button.ToolTip>
+                Создать новую запись
+            </Button.ToolTip>
+        </Button>
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="1" Height="54">
+            <Button.ToolTip>
+                Создать новую запись
+            </Button.ToolTip>
+        </Button>
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="2" Height="54">
+            <Button.ToolTip>
+                Создать новую запись
+            </Button.ToolTip>
+        </Button>
+        <ContentControl Focusable="False" Panel.ZIndex="0" Grid.RowSpan="5" Content="{Binding AddOrViewExisting}" Height="644" VerticalAlignment="Top"/>
+    </Grid>
+</UserControl>
