@@ -10,6 +10,7 @@
     <UserControl.DataContext>
         <vm:AllNotesViewModel/>
     </UserControl.DataContext>
+    
     <Grid>
         <DockPanel Width="Auto" Margin="0,55,0,0">
             <ScrollViewer DockPanel.Dock="Top" VerticalScrollBarVisibility="Auto" CanContentScroll="True" HorizontalAlignment="Left" Width="667">

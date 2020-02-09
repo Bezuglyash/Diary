@@ -134,9 +134,13 @@
     <Compile Include="Another\Day.cs" />
     <Compile Include="Another\Event.cs" />
     <Compile Include="Another\IDate.cs" />
+    <Compile Include="Another\TaskForTheDay.cs" />
     <Compile Include="DataBase\ImportantDate.cs" />
     <Compile Include="DataBase\Note.cs" />
+    <Compile Include="DataBase\TimetableForTheDay.cs" />
     <Compile Include="DataBase\User.cs" />
+    <Compile Include="Model\TimetableForTheDaysLogic.cs" />
+    <Compile Include="ViewModel\AllTimetablesViewModel.cs" />
     <Compile Include="ViewModel\DayViewModel.cs" />
     <Compile Include="Model\ImportantDatesLogic.cs" />
     <Compile Include="Model\NotesLogic.cs" />
@@ -147,10 +151,17 @@
     <Compile Include="ViewModel\MyNotesViewModel.cs" />
     <Compile Include="ViewModel\NewImportantDateViewModel.cs" />
     <Compile Include="ViewModel\NewNoteViewModel.cs" />
+    <Compile Include="ViewModel\NewTimetableViewModel.cs" />
     <Compile Include="ViewModel\OrganizerViewModel.cs" />
     <Compile Include="ViewModel\PasswordViewModel.cs" />
     <Compile Include="ViewModel\PlannerViewModel.cs" />
     <Compile Include="ViewModel\StartUsingViewModel.cs" />
+    <Compile Include="View\AllTimetablesView.xaml.cs">
+      <DependentUpon>AllTimetablesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewTimetableView.xaml.cs">
+      <DependentUpon>NewTimetableView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AllImportantDatesView.xaml.cs">
       <DependentUpon>AllImportantDatesView.xaml</DependentUpon>
     </Compile>
@@ -181,6 +192,14 @@
     <Compile Include="View\StartUsingThisDiaryView.xaml.cs">
       <DependentUpon>StartUsingThisDiaryView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\AllTimetablesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewTimetableView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AllImportantDatesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

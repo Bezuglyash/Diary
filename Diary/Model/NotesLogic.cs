@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using SQLite;
 using System.Text.RegularExpressions;
 using System;
-using System.Collections;
 using Diary.Another;
 
 namespace Diary.Model
@@ -37,12 +36,12 @@ namespace Diary.Model
             BubbleSortForDates();
             RewriteDate();
             storageNotes = Notes;
-            NumberOfNotes = this.dataBase.Table<Note>().Count().ToString();
+            NumberOfNotes = this.dataBase.Table<Note>().Count();
         }
 
         public IEnumerable<Note> Notes { get; set; }
 
-        public string NumberOfNotes { get; set; }
+        public int NumberOfNotes { get; set; }
 
         public void AddNewNote(string content, string date)
         {
@@ -52,7 +51,7 @@ namespace Diary.Model
             note.CreationOrEditingDate = date;
             dataBase.Insert(note);
             Notes = dataBase.Table<Note>();
-            NumberOfNotes = dataBase.Table<Note>().Count().ToString();
+            NumberOfNotes = dataBase.Table<Note>().Count();
             BubbleSortForDates();
             RewriteDate();
             storageNotes = Notes;
@@ -75,7 +74,7 @@ namespace Diary.Model
         {
             dataBase.Delete<Note>(GetElementById(id).Id);
             Notes = dataBase.Table<Note>();
-            NumberOfNotes = dataBase.Table<Note>().Count().ToString();
+            NumberOfNotes = dataBase.Table<Note>().Count();
             BubbleSortForDates();
             RewriteDate();
             storageNotes = Notes;

@@ -33,7 +33,6 @@ namespace Diary.ViewModel
             Condition = "Visible";
             this.importantDatesLogic = importantDatesLogic;
             calendar = new Calendar();
-            ConditionList = "Collapsed";
             SelectedDay = new RelayCommand<int>(ViewEvents);
             Months = new List<string>()
             {
@@ -51,7 +50,7 @@ namespace Diary.ViewModel
                 "Декабрь"
             };
             Years = new LinkedList<int>();
-            for (int i = 1900; i <= 2528; i++)
+            for (int i = 1900; i <= 2328; i++)
             {
                 Years.AddLast(i);
             }
@@ -76,6 +75,7 @@ namespace Diary.ViewModel
             {
                 selectedMonth = value;
                 ViewCalendar();
+                ViewEvents(1);
             }
         }
 
@@ -86,6 +86,7 @@ namespace Diary.ViewModel
             {
                 selectedYear = value;
                 ViewCalendar();
+                ViewEvents(1);
             }
         }
 
@@ -117,8 +118,6 @@ namespace Diary.ViewModel
             }
         }
 
-        public string ConditionList { get; set; }
-
         public int Count { get; set; }
 
         public string EventText { get; set; }
@@ -148,11 +147,19 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    string[] partsDate = importantDatesLogic.GetEventDate(EventText, ZeroOrNull(pastSelect) + pastSelect.ToString() + "." + calendar.GetNumberOfMonth(SelectedMonth));
-                    string nameMonth = calendar.GetMonthNow(partsDate[1]);
-                    newImportantDateViewModel = new NewImportantDateViewModel(importantDatesLogic, Convert.ToInt32(partsDate[0]), calendar.GetSecondVariantNameOfMonths(nameMonth), Convert.ToInt32(partsDate[2]), EventText, Annually);
+                    if (EventText == "День матери")
+                    {
+                        newImportantDateViewModel = new NewImportantDateViewModel(importantDatesLogic, 25, "Ноября", 1900, EventText, 1);
+                    }
+                    else
+                    {
+                        string[] partsDate = importantDatesLogic.GetEventDate(EventText, ZeroOrNull(pastSelect) + pastSelect.ToString() + "." + calendar.GetNumberOfMonth(SelectedMonth));
+                        string nameMonth = calendar.GetMonthNow(partsDate[1]);
+                        newImportantDateViewModel = new NewImportantDateViewModel(importantDatesLogic, Convert.ToInt32(partsDate[0]), calendar.GetSecondVariantNameOfMonths(nameMonth), Convert.ToInt32(partsDate[2]), EventText, Annually);
+                    }
                     AddEvent = new NewImportantDateView();
                     AddEvent.DataContext = newImportantDateViewModel;
+                    importantDatesLogic.UpdateDataAndList();
                     WaitingNextStepAsync();
                 });
             }
@@ -285,6 +292,10 @@ namespace Diary.ViewModel
                         {
                             DaysOfMonth.Add(new DayViewModel(i, "Red", "Visible"));
                         }
+                        else if (i >= 24 && i <= 30 && SelectedMonth == "Ноябрь" && calendar.GetNameDayOfWeek(i, SelectedMonth, SelectedYear) == "Воскресенье")
+                        {
+                            DaysOfMonth.Add(new DayViewModel(i, "Red", "Visible"));
+                        }
                         else
                         {
                             DaysOfMonth.Add(new DayViewModel(i, "Red", "Collapsed"));
@@ -315,20 +326,26 @@ namespace Diary.ViewModel
 
         private void ViewEvents(int selectedDay)
         {
-            ConditionList = "Visible";
             Events = new ObservableCollection<Event>();
             List<string> events = new List<string>();
+
             events = importantDatesLogic.GetEvents(ZeroOrNull(selectedDay) + selectedDay.ToString() + "." + calendar.GetNumberOfMonth(SelectedMonth), SelectedYear);
             if (calendar.IsThisLeapYear(SelectedYear) == false && SelectedMonth == "Март" && selectedDay == 1 && importantDatesLogic.IsHaveEvents(ZeroOrNull(29) + 29.ToString() + "." + calendar.GetNumberOfMonth("Февраль"), SelectedYear))
             {
-                events = importantDatesLogic.GetEvents(29.ToString() + "." + calendar.GetNumberOfMonth("Февраль"), SelectedYear);
+                events.AddRange(importantDatesLogic.GetEvents(29.ToString() + "." + calendar.GetNumberOfMonth("Февраль"), SelectedYear));
             }
+            if (selectedDay >= 24 && selectedDay <= 30 && SelectedMonth == "Ноябрь")
+            {
+                events.Add("День матери");
+            }
+
             foreach (var current in events)
             {
                 Event eventer = new Event();
                 eventer.TextEvent = current;
                 Events.Add(eventer);
             }
+
             Count = Events.Count;
             SelectedEvent = -1;
             Select(selectedDay);

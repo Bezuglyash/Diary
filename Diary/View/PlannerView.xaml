@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:Diary.ViewModel"
              mc:Ignorable="d" 
-             d:DesignWidth="728" Focusable="False" d:DesignHeight="728" Background="FloralWhite">
+             d:DesignWidth="679" Focusable="False" d:DesignHeight="644" Background="FloralWhite">
     <UserControl.DataContext>
         <vm:PlannerViewModel/>
     </UserControl.DataContext>
@@ -18,12 +18,12 @@
             <RowDefinition Height="0*"></RowDefinition>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Focusable="False" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="0" Background="BlanchedAlmond" Margin="1,0,-1,0">
+        <Button Focusable="False" Command="{Binding ViewTimetables}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="0" Background="BlanchedAlmond" Margin="1,0,-1,0">
             <StackPanel Orientation="Vertical">
                 <TextBlock DockPanel.Dock="Top" Text="Расписание на день" FontSize="19" HorizontalAlignment="Center"/>
                 <DockPanel HorizontalAlignment="Center">
                     <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
-                    <TextBlock DockPanel.Dock="Right" Text="{Binding NotesLogic.NumberOfNotes, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding TimetableForTheDaysLogic.NumberOfCases, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
                 </DockPanel>
             </StackPanel>
         </Button>
@@ -32,7 +32,7 @@
                 <TextBlock DockPanel.Dock="Top" Text="Треккер привычек" FontSize="19" HorizontalAlignment="Center"/>
                 <DockPanel HorizontalAlignment="Center">
                     <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
-                    <TextBlock DockPanel.Dock="Right" Text="{Binding ImportantDatesLogic.NumberOfDates, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="0" FontSize="12" HorizontalAlignment="Center"/>
                 </DockPanel>
             </StackPanel>
         </Button>
@@ -41,11 +41,11 @@
                 <TextBlock DockPanel.Dock="Top" Text="Цели" FontSize="19" HorizontalAlignment="Center"/>
                 <DockPanel HorizontalAlignment="Center">
                     <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
-                    <TextBlock DockPanel.Dock="Right" Text="{Binding ImportantDatesLogic.NumberOfDates, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="0" FontSize="12" HorizontalAlignment="Center"/>
                 </DockPanel>
             </StackPanel>
         </Button>
-        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewNote}" HorizontalAlignment="Stretch" Margin="630,0,-2,1" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="0" Height="54">
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewTimetable}" HorizontalAlignment="Stretch" Margin="630,0,-2,1" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="0" Height="54">
             <Button.ToolTip>
                 Создать новую запись
             </Button.ToolTip>
@@ -60,5 +60,6 @@
                 Создать новую запись
             </Button.ToolTip>
         </Button>
+        <ContentControl Focusable="False" Panel.ZIndex="0" Grid.RowSpan="5" Content="{Binding AddOrViewExisting}" Height="644" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

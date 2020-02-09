@@ -25,5 +25,10 @@ namespace Diary.ViewModel
                 return false;
             }
         }
+
+        public void ShowWarning()
+        {
+            MessageBox.Show(text, caption, MessageBoxButton.OK);
+        }
     }
 }

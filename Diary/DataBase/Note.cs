@@ -1,6 +1,4 @@
-﻿
-using SQLite;
-using System.Collections.Specialized;
+﻿using SQLite;
 
 namespace Diary.DataBase
 {

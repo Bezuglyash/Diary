@@ -15,20 +15,20 @@ namespace Diary.Model.ImportantDatesLogic
         {
             this.dataBase = dataBase;
             StandartActions();
-            if (NumberOfDates == "0")
+            importantDates = new List<ImportantDate>();
+            if (NumberOfDates == 0)
             {
                 AutomaticFilling();
             }
             else
             {
-                importantDates = new List<ImportantDate>();
                 ToList();
             }
         }
 
         public IEnumerable<ImportantDate> ImportantDates { get; set; }
 
-        public string NumberOfDates { get; set; }
+        public int NumberOfDates { get; set; }
 
         public void AddNewEvent(string eventOfThisDate, string date, int isAnnually)
         {
@@ -40,36 +40,47 @@ namespace Diary.Model.ImportantDatesLogic
             StandartActions();
         }
 
+        public void UpdateData(int id, string eventOfThisDate, string date, int isAnnually)
+        {
+            ImportantDate importantDate = GetElementById(id);
+            importantDate.Date = date;
+            importantDate.Event = eventOfThisDate;
+            importantDate.IsAnnually = isAnnually;
+            dataBase.Update(importantDate);
+            StandartActions();
+        }
+
         public void DeleteEvent(string eventOfThisDate, string date)
         {
             dataBase.Delete<ImportantDate>(GetElementByEventAndDate(eventOfThisDate, date).Id);
             StandartActions();
         }
 
-        public List<string> GetEvents (string date, int year)
+        public List<string> GetEvents (string date, int year, bool isLastSundayInThisNovember = false)
         {
             List<string> result = new List<string>();
             foreach(var importantDate in importantDates)
             {
-                if (importantDate.Date.Length == 10)
+                if (importantDate.Date.Remove(5, 5) == date)
                 {
-                    if (importantDate.Date.Remove(5, 5) == date)
+                    if (importantDate.IsAnnually == 1)
                     {
-                        if (importantDate.IsAnnually == 1)
+                        if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) >= 0)
                         {
-                            if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) >= 0)
-                            {
-                                result.Add(importantDate.Event);
-                            }
-                        }
-                        else
-                        {
-                            if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) == 0)
-                            {
-                                result.Add(importantDate.Event);
-                            }
+                            result.Add(importantDate.Event);
                         }
                     }
+                    else
+                    {
+                        if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) == 0)
+                        {
+                            result.Add(importantDate.Event);
+                        }
+                    }
+                }
+                else if (isLastSundayInThisNovember == true && importantDate.Event == "День матери")
+                {
+                    result.Add(importantDate.Event);
                 }
             }
             return result;
@@ -79,23 +90,20 @@ namespace Diary.Model.ImportantDatesLogic
         {
             foreach (var importantDate in importantDates)
             {
-                if (importantDate.Date.Length == 10)
+                if (importantDate.Date.Remove(5, 5) == date)
                 {
-                    if (importantDate.Date.Remove(5, 5) == date)
+                    if (importantDate.IsAnnually == 1)
                     {
-                        if (importantDate.IsAnnually == 1)
+                        if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) >= 0)
                         {
-                            if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) >= 0)
-                            {
-                                return true;
-                            }
+                            return true;
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) == 0)
                         {
-                            if (year - Convert.ToInt32(importantDate.Date.Remove(0, 6)) == 0)
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
                 }
@@ -107,10 +115,15 @@ namespace Diary.Model.ImportantDatesLogic
         {
             foreach (var importantDate in importantDates)
             {
-                if (importantDate.Date.Length == 10)
+                if (importantDate.Date.Remove(5, 5) == date && importantDate.Event == eventer)
                 {
-                    if (importantDate.Date.Remove(5, 5) == date && importantDate.Event == eventer)
+                    return importantDate.IsAnnually;
+                }
+                else if (importantDate.Event == eventer)
+                {
+                    if (eventer == "День матери")
                     {
+
                         return importantDate.IsAnnually;
                     }
                 }
@@ -127,41 +140,86 @@ namespace Diary.Model.ImportantDatesLogic
             importantDates.Add(importantDate);
         }
 
+        public void UpdateToList(int id, string eventOfThisDate, string date, int isAnnually)
+        {
+            for (int i = 0; i < importantDates.Count; i++)
+            {
+                if (importantDates[i].Id == id)
+                {
+                    importantDates[i].Date = date;
+                    importantDates[i].Event = eventOfThisDate;
+                    importantDates[i].IsAnnually = isAnnually;
+                }
+            }
+        }
+
         public void DeleteToList(string eventOfThisDate, string date)
         {
             for (int i = 0; i < importantDates.Count; i++)
             {
-                if (importantDates[i].Date.Length == 10)
+                if (importantDates[i].Date.Remove(5, 5) == date)
                 {
-                    if (importantDates[i].Date.Remove(5, 5) == date)
+                    if (importantDates[i].Event == eventOfThisDate)
                     {
-                        if (importantDates[i].Event == eventOfThisDate)
-                        {
-                            importantDates.RemoveAt(i);
-                            return;
-                        }
+                        importantDates.RemoveAt(i);
+                        return;
+                    }
+                }
+                else if (importantDates[i].Event == eventOfThisDate)
+                {
+                    if (eventOfThisDate == "День матери")
+                    {
+                        importantDates.RemoveAt(i);
+                        return;
                     }
                 }
             }
         }
 
-        public string[] GetEventDate(string eventer, string shirtDate)
+        public string[] GetEventDate(string eventer, string shirtDate) // Для дня матери автоматическое определение
         {
             foreach (var importantDate in importantDates)
             {
-                if (importantDate.Date.Length == 10)
+                if (importantDate.Event == eventer && importantDate.Date.Remove(5, 5) == shirtDate)
                 {
-                    if (importantDate.Event == eventer && importantDate.Date.Remove(5, 5) == shirtDate)
-                    {
-                        return importantDate.Date.Split(new char[] { '.' });
-                    }
-                    else if (importantDate.Event == eventer && importantDate.Date.Remove(5, 5) == "29.02")
-                    {
-                        return importantDate.Date.Split(new char[] { '.' });
-                    }
+                    return importantDate.Date.Split(new char[] { '.' });
+                }
+                else if (importantDate.Event == eventer && importantDate.Date.Remove(5, 5) == "29.02")
+                {
+                    return importantDate.Date.Split(new char[] { '.' });
                 }
             }
             return null;
+        }
+
+        public int GetIdByEventAndDate(string eventOfThisDate, string date)
+        {
+            IEnumerator<ImportantDate> iterator = ImportantDates.GetEnumerator();
+            while (iterator.MoveNext())
+            {
+                if (iterator.Current.Date == date)
+                {
+                    if (iterator.Current.Event == eventOfThisDate)
+                    {
+                        return iterator.Current.Id;
+                    }
+                }
+                else if (iterator.Current.Event == eventOfThisDate)
+                {
+                    if (eventOfThisDate == "День матери")
+                    {
+                        return iterator.Current.Id;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        public void UpdateDataAndList()
+        {
+            StandartActions();
+            importantDates.Clear();
+            ToList();
         }
 
         private void ToList()
@@ -178,15 +236,32 @@ namespace Diary.Model.ImportantDatesLogic
             IEnumerator<ImportantDate> iterator = ImportantDates.GetEnumerator();
             while (iterator.MoveNext())
             {
-                if (iterator.Current.Date.Length == 10)
+                if (iterator.Current.Date.Remove(5, 5) == date)
                 {
-                    if (iterator.Current.Date.Remove(5, 5) == date)
+                    if (iterator.Current.Event == eventOfThisDate)
                     {
-                        if (iterator.Current.Event == eventOfThisDate)
-                        {
-                            return iterator.Current;
-                        }
+                        return iterator.Current;
                     }
+                }
+                else if (iterator.Current.Event == eventOfThisDate)
+                {
+                    if (eventOfThisDate == "День матери")
+                    {
+                        return iterator.Current;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private ImportantDate GetElementById(int id)
+        {
+            IEnumerator<ImportantDate> iterator = ImportantDates.GetEnumerator();
+            while (iterator.MoveNext())
+            {
+                if (iterator.Current.Id == id)
+                {
+                    return iterator.Current;
                 }
             }
             return null;
@@ -195,7 +270,7 @@ namespace Diary.Model.ImportantDatesLogic
         private void StandartActions()
         {
             ImportantDates = this.dataBase.Table<ImportantDate>();
-            NumberOfDates = this.dataBase.Table<ImportantDate>().Count().ToString();
+            NumberOfDates = this.dataBase.Table<ImportantDate>().Count();
         }
 
         private void AutomaticFilling()
@@ -242,7 +317,7 @@ namespace Diary.Model.ImportantDatesLogic
             importantDate.IsAnnually = 1;
             dataBase.Insert(importantDate);
             importantDate.Event = "День матери";
-            importantDate.Date = "11.1998";
+            importantDate.Date = "24 25 26 27 28 29 30.11.1998";
             importantDate.IsAnnually = 1;
             dataBase.Insert(importantDate);
         }

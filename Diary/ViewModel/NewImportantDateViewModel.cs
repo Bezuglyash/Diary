@@ -22,6 +22,7 @@ namespace Diary.ViewModel
         private int selectedYear;
         private string text;
         private Dispatcher dispatcher;
+        private int editId;
 
         public NewImportantDateViewModel() { }
 
@@ -37,6 +38,7 @@ namespace Diary.ViewModel
                 Days.Add(i);
             }
             SelectedDay = Convert.ToInt32(DateTime.Now.ToString("dd"));
+            editId = -1;
         }
 
         public NewImportantDateViewModel(ImportantDatesLogic importantDatesLogic, int numberOfDay, string month, int year)
@@ -51,6 +53,7 @@ namespace Diary.ViewModel
                 Days.Add(i);
             }
             SelectedDay = numberOfDay;
+            editId = -1;
         }
 
         public NewImportantDateViewModel(ImportantDatesLogic importantDatesLogic, int numberOfDay, string month, int year, string eventText, int annually)
@@ -74,6 +77,7 @@ namespace Diary.ViewModel
             {
                 IsAnnually = false;
             }
+            editId = importantDatesLogic.GetIdByEventAndDate(Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString());
         }
 
         public string Condition { get; set; }
@@ -135,6 +139,7 @@ namespace Diary.ViewModel
             {
                 if (value.Length <= 41)
                 {
+                   
                     text = value;
                 }
             }
@@ -161,13 +166,12 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    if (Text == null || Text.Length == 0)
+                    if (Text == null || Text.Length == 0 || Text.Length == CountGaps())
                     {
                         BackgroundErrorAsync();
                     }
                     else
                     {
-                        Thread thread = new Thread(new ParameterizedThreadStart(AddNewDate));
                         int annually;
                         if (IsAnnually)
                         {
@@ -177,9 +181,20 @@ namespace Diary.ViewModel
                         {
                             annually = 0;
                         }
-                        importantDatesLogic.AddToList(Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), Convert.ToInt32(annually));
-                        Condition = "Collapsed";
-                        thread.Start(annually);
+                        if (editId == -1)
+                        {
+                            Thread thread = new Thread(new ParameterizedThreadStart(AddNewDate));
+                            importantDatesLogic.AddToList(Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), annually);
+                            Condition = "Collapsed";
+                            thread.Start(annually);
+                        }
+                        else
+                        {
+                            Thread thread = new Thread(new ParameterizedThreadStart(UpdateDate));
+                            importantDatesLogic.UpdateToList(editId, Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), annually);
+                            Condition = "Collapsed";
+                            thread.Start(annually);
+                        }
                     }
                 });
             }
@@ -212,6 +227,14 @@ namespace Diary.ViewModel
             dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
             {
                 importantDatesLogic.AddNewEvent(Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), Convert.ToInt32(annually));
+            });
+        }
+
+        private void UpdateDate(object annually)
+        {
+            dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
+            {
+                importantDatesLogic.UpdateData(editId, Text, ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString(), Convert.ToInt32(annually));
             });
         }
 
@@ -254,13 +277,26 @@ namespace Diary.ViewModel
                 "Декабря"
             };
             Years = new LinkedList<int>();
-            for (int i = 1900; i <= 2528; i++)
+            for (int i = 1900; i <= 2328; i++)
             {
                 Years.AddLast(i);
             }
             Days = new ObservableCollection<int>();
             dispatcher = Dispatcher.CurrentDispatcher;
             Color = (Brush)new BrushConverter().ConvertFromString("LightGoldenrodYellow");
+        }
+
+        private int CountGaps ()
+        {
+            int countGaps = 0;
+            for (int i = 0; i < Text.Length; i++)
+            {
+                if (Text[i] == ' ')
+                {
+                    countGaps++;
+                }
+            }
+            return countGaps;
         }
     }
 }

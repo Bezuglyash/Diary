@@ -13,14 +13,17 @@ namespace Diary.ViewModel
     {
         private NotesLogic notesLogic;
         private ImportantDatesLogic importantDatesLogic;
+        private TimetableForTheDaysLogic timetableForTheDaysLogic;
         private MyNotesViewModel myNotesViewModel;
+        private PlannerViewModel plannerViewModel;
 
         public OrganizerViewModel() { }
 
-        public OrganizerViewModel((NotesLogic, ImportantDatesLogic) logics)
+        public OrganizerViewModel((NotesLogic, ImportantDatesLogic, TimetableForTheDaysLogic) logics)
         {
             notesLogic = logics.Item1;
             importantDatesLogic = logics.Item2;
+            timetableForTheDaysLogic = logics.Item3;
             IsEnabledNotes = false;
             IsEnabledPlanner = true;
             myNotesViewModel = new MyNotesViewModel(notesLogic, importantDatesLogic);
@@ -38,6 +41,7 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
+                    plannerViewModel.IsClose = true;
                     myNotesViewModel = new MyNotesViewModel(notesLogic, importantDatesLogic);
                     OrganizerType = new MyNotesView();
                     OrganizerType.DataContext = myNotesViewModel;
@@ -54,8 +58,9 @@ namespace Diary.ViewModel
                 return new RelayCommand(() =>
                 {
                     myNotesViewModel.IsClose = true;
+                    plannerViewModel = new PlannerViewModel(timetableForTheDaysLogic);
                     OrganizerType = new PlannerView();
-                    OrganizerType.DataContext = new PlannerViewModel();
+                    OrganizerType.DataContext = plannerViewModel;
                     IsEnabledNotes = true;
                     IsEnabledPlanner = false;
                 });

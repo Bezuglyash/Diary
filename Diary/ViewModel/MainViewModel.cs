@@ -14,6 +14,7 @@ namespace Diary.ViewModel
         private DiaryLogic diaryLogic;
         private NotesLogic notesLogic;
         private ImportantDatesLogic importantDatesLogic;
+        private TimetableForTheDaysLogic timetableForTheDaysLogic;
         private string userName;
         private string valueNow;
         private string valueUpdate;
@@ -121,7 +122,7 @@ namespace Diary.ViewModel
                     break;
                 case "MyNotes":
                     DiaryOperation = new OrganizerView();
-                    DiaryOperation.DataContext = new OrganizerViewModel((notesLogic, importantDatesLogic));
+                    DiaryOperation.DataContext = new OrganizerViewModel((notesLogic, importantDatesLogic, timetableForTheDaysLogic));
                     break;
                 default:
                     break;
@@ -141,6 +142,7 @@ namespace Diary.ViewModel
         {
             notesLogic = new NotesLogic(diaryLogic.GetDataBase());
             importantDatesLogic = new ImportantDatesLogic(diaryLogic.GetDataBase());
+            timetableForTheDaysLogic = new TimetableForTheDaysLogic(diaryLogic.GetDataBase());
         }
     }
 }

@@ -190,7 +190,7 @@
         <TextBox 
             x:Name="Event"
             FontSize="19"
-            Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}" 
+            Text="{Binding Text, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
             IsTabStop="False"
             Padding="7, 1"
             Background="{Binding Color}" 

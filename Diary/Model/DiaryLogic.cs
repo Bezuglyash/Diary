@@ -11,7 +11,6 @@ namespace Diary.Model
         private const string NAME_DATA_BASE = "Diary.db";
         private SQLiteConnection dataBase;
         private User user;
-        private IEnumerable<ImportantDate> importantDates;
 
         public DiaryLogic()
         {
@@ -21,7 +20,6 @@ namespace Diary.Model
                 ItWasOpen = true;
                 dataBase = new SQLiteConnection(NAME_DATA_BASE, SQLiteOpenFlags.ReadWrite, true);
                 user = dataBase.Get<User>(1);
-                importantDates = dataBase.Table<ImportantDate>();
             }
             catch (Exception)
             {
@@ -37,7 +35,6 @@ namespace Diary.Model
             set
             {
                 user.Name = value;
-                RaisePropertyChanged(() => NameUser);
             }
         }
 
@@ -48,7 +45,6 @@ namespace Diary.Model
             {
                 user.Password = value;
                 SaveUser(1);
-                RaisePropertyChanged(() => UserPassword);
             }
         }
 
@@ -58,6 +54,7 @@ namespace Diary.Model
             dataBase.CreateTable<User>();
             dataBase.CreateTable<Note>();
             dataBase.CreateTable<ImportantDate>();
+            dataBase.CreateTable<TimetableForTheDay>();
         }
 
         public void SaveUser(int isHavePassword = 0)
