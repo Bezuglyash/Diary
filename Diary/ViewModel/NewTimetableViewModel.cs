@@ -61,6 +61,7 @@ namespace Diary.ViewModel
             ClippingDays(selectedDay);
             counter = 0;
             SearchingExistingCases();
+            Count = ListOfTasks.Count;
             dispatcher = Dispatcher.CurrentDispatcher;
             dispatcherHelp = 1;
         }
@@ -225,13 +226,14 @@ namespace Diary.ViewModel
                         if (dispatcherHelp == 1)
                         {
                             Thread thread = new Thread(new ThreadStart(RewriteData));
+                            Condition = "Collapsed";
                             thread.Start();
                         }
                         else
                         {
                             timetableForTheDaysLogic.Distribution(ToList(), ZeroOrNull() + SelectedDay.ToString() + "." + day.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString());
+                            Condition = "Collapsed";
                         }
-                        Condition = "Collapsed";
                     }
                     else
                     {

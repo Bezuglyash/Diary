@@ -42,7 +42,7 @@
         </Button>
         <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="1" Height="55" Grid.RowSpan="2">
             <Button.ToolTip>
-                Создать новую запись
+                Добавить событие/Редактировать даты
             </Button.ToolTip>
         </Button>
         <ContentControl Focusable="False" Panel.ZIndex="0" Grid.RowSpan="4" Content="{Binding AddOrViewExisting}" Height="644" VerticalAlignment="Top"/>

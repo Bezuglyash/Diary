@@ -1,0 +1,203 @@
+﻿<UserControl x:Class="Diary.View.NewHabitTrackerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Diary.ViewModel"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignWidth="679" Focusable="False" d:DesignHeight="644" Background="FloralWhite" Visibility="{Binding Condition}">
+
+    <UserControl.DataContext>
+        <vm:NewHabitTrackerViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <TextBlock 
+            Focusable="False"
+            FontSize="19"
+            Foreground="Gray" 
+            TextAlignment="Center"
+            Text="Треккер"
+            Margin="240,10,274,602"/>
+
+        <Button 
+            Command="{Binding Cancel}"
+            Focusable="False"
+            Background="FloralWhite" 
+            VerticalAlignment="Top"
+            BorderThickness="0" 
+            Height="39" 
+            Margin="19,10,606,0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3"/>
+                </Style>
+            </Button.Resources>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center"><InlineUIContainer>
+                        <materialDesign:PackIcon Kind="Backspace" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </InlineUIContainer></TextBlock>
+                <TextBlock DockPanel.Dock="Bottom" Text="Назад" FontSize="12" HorizontalAlignment="Center"/>
+            </DockPanel>
+        </Button>
+
+        <DockPanel Focusable="False" Width="Auto" Margin="100,40,112,28">
+            <ScrollViewer Focusable="False" VerticalScrollBarVisibility="Visible" CanContentScroll="True" HorizontalAlignment="Left" Width="467">
+                <ItemsControl 
+                    Background="LightGoldenrodYellow"
+                    Focusable="False"
+                    ItemsSource="{Binding ListOfHabits, UpdateSourceTrigger=PropertyChanged}" 
+                    BorderThickness="1" 
+                    Width="467">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Height="55">
+                                <TextBox
+                                    Width="355"
+                                    Height="28"
+                                    Padding="7, 1, 3, 0"
+                                    Text="{Binding Habit, UpdateSourceTrigger=PropertyChanged}"
+                                    FontSize="19"
+                                    Margin="12,14,64,13" 
+                                    Background="White"
+                                    HorizontalAlignment="Center">
+                                    <TextBox.Resources>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="IsReadOnly" Value="{Binding IsOnlyRead}"/>
+                                        </Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="3"/>
+                                        </Style>
+                                    </TextBox.Resources>
+                                </TextBox>
+                                <Button 
+                                    Background="LightGoldenrodYellow"
+                                    Margin="-55,4,64,4"
+                                    Focusable="False"
+                                    Height="28"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.EditHabit}"
+                                    CommandParameter="{Binding Index}"
+                                    BorderThickness="0">
+                                    <TextBlock DockPanel.Dock="Top" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="Edit" HorizontalAlignment="Center" VerticalAlignment="Center" Height="19" Width="28"/>
+                                    </TextBlock>
+                                    <Button.Resources>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="3"/>
+                                        </Style>
+                                    </Button.Resources>
+                                    <Button.ToolTip>
+                                        Сохранить/Редактировать
+                                    </Button.ToolTip>
+                                </Button>
+                                <Button 
+                                    Background="LightGoldenrodYellow"
+                                    Margin="-55,4,64,4"
+                                    Focusable="False"
+                                    Height="28"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}, Path=DataContext.DeleteHabit}"
+                                    CommandParameter="{Binding Index}"
+                                    BorderThickness="0">
+                                    <TextBlock DockPanel.Dock="Top" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" Height="19" Width="28"/>
+                                    </TextBlock>
+                                    <Button.Resources>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="3"/>
+                                        </Style>
+                                    </Button.Resources>
+                                    <Button.ToolTip>
+                                        Удалить привычку
+                                    </Button.ToolTip>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </DockPanel>
+
+        <Button 
+            Background="LightGoldenrodYellow"
+            Margin="523,12,128,604"
+            Focusable="False"
+            Command="{Binding AddNewHabit}"
+            BorderThickness="0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3"/>
+                </Style>
+            </Button.Resources>
+            <Button.ToolTip>
+                Добавить привычку
+            </Button.ToolTip>
+            <TextBlock DockPanel.Dock="Top" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"><InlineUIContainer>
+                    <materialDesign:PackIcon Kind="NoteAdd" HorizontalAlignment="Center" VerticalAlignment="Center" Height="28" Width="28"/>
+                </InlineUIContainer></TextBlock>
+        </Button>
+        
+        <Button
+            x:Name="save"
+            Command="{Binding SaveTracker}"
+            Focusable="False"
+            Background="FloralWhite" 
+            BorderThickness="0" 
+            Margin="588,582,12,28">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="3"/>
+                </Style>
+            </Button.Resources>
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center"><InlineUIContainer>
+                        <materialDesign:PackIcon Kind="FileDocumentBoxCheck" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </InlineUIContainer></TextBlock>
+                <TextBlock DockPanel.Dock="Bottom" Text="Сохранить" FontSize="12" HorizontalAlignment="Center"/>
+            </DockPanel>
+        </Button>
+
+        <Label
+            IsTabStop="False"
+            Foreground="Gray"
+            FontSize="19" 
+            Margin="246,238,254,321">
+            <Label.Resources>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger  Binding="{Binding Count}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Resources>
+            <DockPanel Width="165" Height="79">
+                <TextBlock 
+                    FontSize="19" 
+                    DockPanel.Dock="Bottom"
+                    Foreground="Gray" 
+                    TextAlignment="Center"
+                    Text="Нет привычек"
+                    Height="32"/>
+                <TextBlock DockPanel.Dock="Top" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"><InlineUIContainer>
+                        <materialDesign:PackIcon 
+                            Kind="Text" 
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" 
+                            Height="40" 
+                            Width="55"/>
+                    </InlineUIContainer></TextBlock>
+            </DockPanel>
+        </Label>
+    </Grid>
+</UserControl>

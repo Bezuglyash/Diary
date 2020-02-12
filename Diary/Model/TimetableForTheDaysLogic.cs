@@ -58,11 +58,6 @@ namespace Diary.Model
             StandartActions();
         }
 
-        public void DeleteTask(TimetableForTheDay timetable)
-        {
-            dataBase.Delete<TimetableForTheDay>(timetable.Id);
-        }
-
         public void Distribution (List<TaskForTheDay> tasksForTheDay, string date)
         {
             if (tasksForTheDay.Count != 0 && tasksForTheDay[0] != null)
@@ -96,9 +91,9 @@ namespace Diary.Model
                         count = tasksForTheDay.Count;
                     }
                 }
-                foreach (var taskForTheDay in tasksForTheDay)
+                if (tasksForTheDay.Count > 0)
                 {
-                    AddTask(taskForTheDay, date);
+                    AddTask(tasksForTheDay, date);
                 }
             }
             for (int i = 0; i < timetablesForTheDay.Count; i++)
@@ -123,14 +118,24 @@ namespace Diary.Model
             return false;
         }
 
-        private void AddTask(TaskForTheDay task, string date)
+        private void AddTask(List<TaskForTheDay> tasks, string date)
         {
-            TimetableForTheDay timetableForTheDay = new TimetableForTheDay();
-            timetableForTheDay.DateTimetable = date;
-            timetableForTheDay.Case = task.Title;
-            timetableForTheDay.Description = task.Description;
-            timetableForTheDay.IsItDone = 0;
-            dataBase.Insert(timetableForTheDay);
+            List<TimetableForTheDay> timetables = new List<TimetableForTheDay>();
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                TimetableForTheDay timetable = new TimetableForTheDay();
+                timetable.DateTimetable = date;
+                timetable.Case = tasks[i].Title;
+                timetable.Description = tasks[i].Description;
+                timetable.IsItDone = 0;
+                timetables.Add(timetable);
+            }
+            dataBase.InsertAll(timetables);
+        }
+
+        private void DeleteTask(TimetableForTheDay timetable)
+        {
+            dataBase.Delete<TimetableForTheDay>(timetable.Id);
         }
 
         private void UpdateTask(TimetableForTheDay timetable, TaskForTheDay task)

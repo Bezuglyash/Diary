@@ -511,7 +511,7 @@
                 <Style TargetType="{x:Type Label}">
                     <Setter Property="Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger  Binding="{Binding Count}" Value="0">
+                        <DataTrigger  Binding="{Binding Count, UpdateSourceTrigger=PropertyChanged}" Value="0">
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>

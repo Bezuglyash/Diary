@@ -15,6 +15,7 @@ namespace Diary.ViewModel
         private NotesLogic notesLogic;
         private ImportantDatesLogic importantDatesLogic;
         private TimetableForTheDaysLogic timetableForTheDaysLogic;
+        private HabitsTrackerLogic habitsTrackerLogic;
         private string userName;
         private string valueNow;
         private string valueUpdate;
@@ -69,7 +70,7 @@ namespace Diary.ViewModel
                     }
                     if (lastClick != "Органайзер")
                     {
-                        SwitchView("MyNotes");
+                        SwitchView("Органайзер");
                         lastClick = "Органайзер";
                     }
                 });
@@ -116,13 +117,11 @@ namespace Diary.ViewModel
                 case "":
                     DiaryStartUsing = new StartUsingThisDiaryView();
                     DiaryStartUsing.DataContext = new StartUsingViewModel(diaryLogic);
-                    diaryLogic.CreateDataBaseAndTables();
-                    CreateLogics();
                     WaitingAsync();
                     break;
-                case "MyNotes":
+                case "Органайзер":
                     DiaryOperation = new OrganizerView();
-                    DiaryOperation.DataContext = new OrganizerViewModel((notesLogic, importantDatesLogic, timetableForTheDaysLogic));
+                    DiaryOperation.DataContext = new OrganizerViewModel((notesLogic, importantDatesLogic, timetableForTheDaysLogic, habitsTrackerLogic));
                     break;
                 default:
                     break;
@@ -135,6 +134,8 @@ namespace Diary.ViewModel
             {
                 while (diaryLogic.NameUser == "") { }
                 Greeting = diaryLogic.NameUser;
+                diaryLogic.CreateDataBaseAndTables();
+                CreateLogics();
             });
         }
 
@@ -143,6 +144,7 @@ namespace Diary.ViewModel
             notesLogic = new NotesLogic(diaryLogic.GetDataBase());
             importantDatesLogic = new ImportantDatesLogic(diaryLogic.GetDataBase());
             timetableForTheDaysLogic = new TimetableForTheDaysLogic(diaryLogic.GetDataBase());
+            habitsTrackerLogic = new HabitsTrackerLogic();
         }
     }
 }

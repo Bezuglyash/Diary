@@ -32,7 +32,7 @@
                 <TextBlock DockPanel.Dock="Top" Text="Треккер привычек" FontSize="19" HorizontalAlignment="Center"/>
                 <DockPanel HorizontalAlignment="Center">
                     <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
-                    <TextBlock DockPanel.Dock="Right" Text="0" FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding HabitsTrackerLogic.NumberOfHabits, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
                 </DockPanel>
             </StackPanel>
         </Button>
@@ -47,12 +47,12 @@
         </Button>
         <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewTimetable}" HorizontalAlignment="Stretch" Margin="630,0,-2,1" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="0" Height="54">
             <Button.ToolTip>
-                Создать новую запись
+                Добавить задачу/Редактировать расписание
             </Button.ToolTip>
         </Button>
-        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="1" Height="54">
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewHabit}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="1" Height="54">
             <Button.ToolTip>
-                Создать новую запись
+                Добавить привычку/Редактировать треккер
             </Button.ToolTip>
         </Button>
         <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="2" Height="54">

@@ -294,6 +294,7 @@ namespace Diary.ViewModel
             }
             CanAreEdit = IsNowDate(number);
             Select(number);
+            Count = ListOfTasks.Count;
         }
 
         private void See(int index)
@@ -401,7 +402,6 @@ namespace Diary.ViewModel
         {
             ViewCalendar();
             ViewTasks(day);
-            Count = ListOfTasks.Count;
         }
 
         private TaskForTheDay ElementByIndex(int index)

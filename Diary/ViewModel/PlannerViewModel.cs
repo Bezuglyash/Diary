@@ -10,19 +10,25 @@ namespace Diary.ViewModel
     class PlannerViewModel : ViewModelBase
     {
         private TimetableForTheDaysLogic timetableForTheDaysLogic;
+        private HabitsTrackerLogic habitsTrackerLogic;
         private AllTimetablesViewModel allTimetablesViewModel;
         private NewTimetableViewModel newTimetableViewModel;
+        private NewHabitTrackerViewModel newHabitTrackerViewModel;
         private bool isClose;
 
         public PlannerViewModel() { }
 
-        public PlannerViewModel(TimetableForTheDaysLogic timetableForTheDaysLogic) 
+        public PlannerViewModel(TimetableForTheDaysLogic timetableForTheDaysLogic, HabitsTrackerLogic habitsTrackerLogic) 
         {
             this.timetableForTheDaysLogic = timetableForTheDaysLogic;
             TimetableForTheDaysLogic = this.timetableForTheDaysLogic;
+            this.habitsTrackerLogic = habitsTrackerLogic;
+            HabitsTrackerLogic = this.habitsTrackerLogic;
         }
 
         public TimetableForTheDaysLogic TimetableForTheDaysLogic { get; set; }
+
+        public HabitsTrackerLogic HabitsTrackerLogic { get; set; }
 
         public ICommand ViewTimetables
         {
@@ -46,6 +52,19 @@ namespace Diary.ViewModel
                     newTimetableViewModel = new NewTimetableViewModel(timetableForTheDaysLogic);
                     AddOrViewExisting = new NewTimetableView();
                     AddOrViewExisting.DataContext = newTimetableViewModel;
+                });
+            }
+        }
+
+        public ICommand AddNewHabit
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    newHabitTrackerViewModel = new NewHabitTrackerViewModel(habitsTrackerLogic);
+                    AddOrViewExisting = new NewHabitTrackerView();
+                    AddOrViewExisting.DataContext = newHabitTrackerViewModel;
                 });
             }
         }
