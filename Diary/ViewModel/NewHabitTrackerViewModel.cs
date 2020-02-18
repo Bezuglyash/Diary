@@ -13,8 +13,8 @@ namespace Diary.ViewModel
 {
     class NewHabitTrackerViewModel : ViewModelBase
     {
-        private HabitsTrackerLogic habitsTrackerLogic;
-        private Dispatcher dispatcher;
+        private readonly HabitsTrackerLogic habitsTrackerLogic;
+        private readonly Dispatcher dispatcher;
 
         public NewHabitTrackerViewModel() { }
 
@@ -42,14 +42,7 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    if (ListOfHabits.Count > 0)
-                    {
-                        ListOfHabits.Add(new DataHabit(GetMaxIndex() + 1));
-                    }
-                    else
-                    {
-                        ListOfHabits.Add(new DataHabit(1));
-                    }
+                    ListOfHabits.Add(ListOfHabits.Count > 0 ? new DataHabit(GetMaxIndex() + 1) : new DataHabit(1));
                     Count = ListOfHabits.Count;
                 });
             }
@@ -98,14 +91,7 @@ namespace Diary.ViewModel
         private void Edit(int index)
         {
             DataHabit data = GetDataHabit(index);
-            if (data.IsOnlyRead == false)
-            {
-                data.IsOnlyRead = true;
-            }
-            else
-            {
-                data.IsOnlyRead = false;
-            }
+            data.IsOnlyRead = data.IsOnlyRead == false;
         }
 
         private void Delete(int index)

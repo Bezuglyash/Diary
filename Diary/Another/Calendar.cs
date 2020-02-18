@@ -153,23 +153,6 @@ namespace Diary.Another
             return (DayOfTheWeek)((indexYear + numberOfDay + indexOfMonth + indexCentury + indexLeapYear) % 7) + "";
         }
 
-        public string GetNumberOfMonth(string nameOfMonth)
-        {
-            return numberOfMonths[nameOfMonth].ToString();
-        }
-
-        public bool IsThisLeapYear(int year)
-        {
-            if (Convert.ToInt32(year.ToString().Remove(0, 2)) % 4 == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public int GetNumberDayOfWeek(int numberOfDay, string month, int year)
         {
             int indexCentury, indexYear, indexOfMonth, indexLeapYear;
@@ -193,6 +176,23 @@ namespace Diary.Another
             int interimNumber = Convert.ToInt32(year.ToString().Remove(0, 2));
             indexYear = interimNumber / 12 + interimNumber % 12 + interimNumber % 12 / 4;
             return (indexYear + numberOfDay + indexOfMonth + indexCentury + indexLeapYear) % 7;
+        }
+
+        public string GetNumberOfMonth(string nameOfMonth)
+        {
+            return numberOfMonths[nameOfMonth].ToString();
+        }
+
+        public bool IsThisLeapYear(int year)
+        {
+            if (Convert.ToInt32(year.ToString().Remove(0, 2)) % 4 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public string GetSecondVariantNameOfMonths(string firstVariantNameOfMonths)

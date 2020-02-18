@@ -12,6 +12,7 @@ namespace Diary.ViewModel
         private TimetableForTheDaysLogic timetableForTheDaysLogic;
         private HabitsTrackerLogic habitsTrackerLogic;
         private AllTimetablesViewModel allTimetablesViewModel;
+        private AllHabitsTrackerViewModel allHabitsTrackerViewModel;
         private NewTimetableViewModel newTimetableViewModel;
         private NewHabitTrackerViewModel newHabitTrackerViewModel;
         private bool isClose;
@@ -43,6 +44,19 @@ namespace Diary.ViewModel
             }
         }
 
+        public ICommand ViewHabits
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    allHabitsTrackerViewModel = new AllHabitsTrackerViewModel(habitsTrackerLogic);
+                    AddOrViewExisting = new AllHabitsTrackerView();
+                    AddOrViewExisting.DataContext = allHabitsTrackerViewModel;
+                });
+            }
+        }
+
         public ICommand AddNewTimetable
         {
             get
@@ -65,6 +79,17 @@ namespace Diary.ViewModel
                     newHabitTrackerViewModel = new NewHabitTrackerViewModel(habitsTrackerLogic);
                     AddOrViewExisting = new NewHabitTrackerView();
                     AddOrViewExisting.DataContext = newHabitTrackerViewModel;
+                });
+            }
+        }
+
+        public ICommand AddNewGoal
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    
                 });
             }
         }

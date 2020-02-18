@@ -133,10 +133,13 @@
     <Compile Include="Another\Calendar.cs" />
     <Compile Include="Another\Day.cs" />
     <Compile Include="Another\Event.cs" />
-    <Compile Include="Another\DataHabit.cs" />
+    <Compile Include="Another\Tracker\DataHabit.cs" />
     <Compile Include="Another\IDate.cs" />
-    <Compile Include="Another\MyDictionary.cs" />
+    <Compile Include="DataBase\Goal.cs" />
+    <Compile Include="Model\GoalsLogic.cs" />
+    <Compile Include="Structure\MyDictionary.cs" />
     <Compile Include="Another\TaskForTheDay.cs" />
+    <Compile Include="Another\Tracker\WeekHabit.cs" />
     <Compile Include="DataBase\HabitTracker\HabitTracker.cs" />
     <Compile Include="DataBase\HabitTracker\MonthsYear.cs" />
     <Compile Include="DataBase\ImportantDate.cs" />
@@ -145,6 +148,7 @@
     <Compile Include="DataBase\User.cs" />
     <Compile Include="Model\HabitsTrackerLogic.cs" />
     <Compile Include="Model\TimetableForTheDaysLogic.cs" />
+    <Compile Include="ViewModel\AllHabitsTrackerViewModel.cs" />
     <Compile Include="ViewModel\AllTimetablesViewModel.cs" />
     <Compile Include="ViewModel\DayViewModel.cs" />
     <Compile Include="Model\ImportantDatesLogic.cs" />
@@ -162,6 +166,9 @@
     <Compile Include="ViewModel\PasswordViewModel.cs" />
     <Compile Include="ViewModel\PlannerViewModel.cs" />
     <Compile Include="ViewModel\StartUsingViewModel.cs" />
+    <Compile Include="View\AllHabitsTrackerView.xaml.cs">
+      <DependentUpon>AllHabitsTrackerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AllTimetablesView.xaml.cs">
       <DependentUpon>AllTimetablesView.xaml</DependentUpon>
     </Compile>
@@ -201,6 +208,10 @@
     <Compile Include="View\StartUsingThisDiaryView.xaml.cs">
       <DependentUpon>StartUsingThisDiaryView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\AllHabitsTrackerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AllTimetablesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -301,15 +312,7 @@
   <ItemGroup>
     <None Include="Resources\Diary.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Image3.png" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.13\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.linux.1.1.13\build\net35\SQLitePCLRaw.lib.e_sqlite3.linux.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

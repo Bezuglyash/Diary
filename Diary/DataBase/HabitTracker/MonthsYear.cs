@@ -1,5 +1,4 @@
-﻿using Diary.Another;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Diary.DataBase.HabitTracker
@@ -9,6 +8,6 @@ namespace Diary.DataBase.HabitTracker
     {
         public int Year { get; set; }
 
-        internal MyDictionary<int, List<int>> MonthsCheck { get; set; }
+        public List<List<int>> MonthsCheckList { get; set; }
     }
 }

@@ -55,7 +55,8 @@ namespace Diary.Model
             dataBase.CreateTable<Note>();
             dataBase.CreateTable<ImportantDate>();
             dataBase.CreateTable<TimetableForTheDay>();
-            HabitsTrackerLogic.CreateXMLFile();
+            HabitsTrackerLogic.CreateXmlFile();
+            dataBase.CreateTable<Goal>();
         }
 
         public void SaveUser(int isHavePassword = 0)

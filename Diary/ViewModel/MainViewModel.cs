@@ -16,6 +16,7 @@ namespace Diary.ViewModel
         private ImportantDatesLogic importantDatesLogic;
         private TimetableForTheDaysLogic timetableForTheDaysLogic;
         private HabitsTrackerLogic habitsTrackerLogic;
+        private GoalsLogic goalsLogic;
         private string userName;
         private string valueNow;
         private string valueUpdate;
@@ -32,7 +33,7 @@ namespace Diary.ViewModel
             }
             else
             {
-                CreateLogics();
+                CreateLogic();
             }
             Greeting = diaryLogic.NameUser;
             NowValue = SMALL_VALUE;
@@ -123,28 +124,27 @@ namespace Diary.ViewModel
                     DiaryOperation = new OrganizerView();
                     DiaryOperation.DataContext = new OrganizerViewModel((notesLogic, importantDatesLogic, timetableForTheDaysLogic, habitsTrackerLogic));
                     break;
-                default:
-                    break;
             }
         }
 
-        async private void WaitingAsync()
+        private async void WaitingAsync()
         {
             await Task.Run(() =>
             {
                 while (diaryLogic.NameUser == "") { }
                 Greeting = diaryLogic.NameUser;
                 diaryLogic.CreateDataBaseAndTables();
-                CreateLogics();
+                CreateLogic();
             });
         }
 
-        private void CreateLogics()
+        private void CreateLogic()
         {
             notesLogic = new NotesLogic(diaryLogic.GetDataBase());
             importantDatesLogic = new ImportantDatesLogic(diaryLogic.GetDataBase());
             timetableForTheDaysLogic = new TimetableForTheDaysLogic(diaryLogic.GetDataBase());
             habitsTrackerLogic = new HabitsTrackerLogic();
+            goalsLogic = new GoalsLogic(diaryLogic.GetDataBase());
         }
     }
 }

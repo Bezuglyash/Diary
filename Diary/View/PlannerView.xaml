@@ -27,9 +27,9 @@
                 </DockPanel>
             </StackPanel>
         </Button>
-        <Button Focusable="False" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="1" Background="BlanchedAlmond" Margin="1,0,-1,0">
+        <Button Focusable="False" Command="{Binding ViewHabits}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="1" Background="BlanchedAlmond" Margin="1,0,-1,0">
             <StackPanel Orientation="Vertical">
-                <TextBlock DockPanel.Dock="Top" Text="Треккер привычек" FontSize="19" HorizontalAlignment="Center"/>
+                <TextBlock DockPanel.Dock="Top" Text="Трекер привычек" FontSize="19" HorizontalAlignment="Center"/>
                 <DockPanel HorizontalAlignment="Center">
                     <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
                     <TextBlock DockPanel.Dock="Right" Text="{Binding HabitsTrackerLogic.NumberOfHabits, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
@@ -52,12 +52,12 @@
         </Button>
         <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewHabit}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="1" Height="54">
             <Button.ToolTip>
-                Добавить привычку/Редактировать треккер
+                Добавить привычку/Редактировать трекер
             </Button.ToolTip>
         </Button>
-        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewEvent}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="2" Height="54">
+        <Button Focusable="False" Content="+" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Command="{Binding AddNewGoal}" HorizontalAlignment="Stretch" Margin="630,0,-2,0" VerticalAlignment="Bottom" Background="PaleGoldenrod" FontSize="19" Grid.Row="2" Height="54">
             <Button.ToolTip>
-                Создать новую запись
+                Добавить цель
             </Button.ToolTip>
         </Button>
         <ContentControl Focusable="False" Panel.ZIndex="0" Grid.RowSpan="5" Content="{Binding AddOrViewExisting}" Height="644" VerticalAlignment="Top"/>

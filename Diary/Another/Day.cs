@@ -35,6 +35,7 @@ namespace Diary.Another
         private Hashtable numberOfDays;
         private Hashtable indexOfMonths;
         private Hashtable numberOfMonths;
+        private Hashtable monthsOfNumbers;
 
         public Day()
         {
@@ -85,6 +86,22 @@ namespace Diary.Another
                 { "Ноября", "11" },
                 { "Декабря", "12" }
             };
+
+            monthsOfNumbers = new Hashtable()
+            {
+                { "01", "Января" },
+                { "02", "Февраля" },
+                { "03", "Марта" },
+                { "04", "Апреля" },
+                { "05", "Мая" },
+                { "06", "Июня" },
+                { "07", "Июля" },
+                { "08", "Августа" },
+                { "09", "Сентября" },
+                { "10", "Октября" },
+                { "11", "Ноября" },
+                { "12", "Декабря" }
+            };
         }
 
         public string GetMonthNow()
@@ -130,6 +147,31 @@ namespace Diary.Another
             return (DayOfTheWeek)((indexYear + numberOfDay + indexOfMonth + indexCentury + indexLeapYear) % 7) + "";
         }
 
+        public int GetNumberDayOfWeek(int numberOfDay, string month, int year)
+        {
+            int indexCentury, indexYear, indexOfMonth, indexLeapYear;
+            if (year >= 1900 && year < 2000)
+            {
+                indexCentury = 1;
+            }
+            else
+            {
+                indexCentury = 0;
+            }
+            if ((month == "Января" || month == "Февраля") && IsThisLeapYear(year) == true)
+            {
+                indexLeapYear = -1;
+            }
+            else
+            {
+                indexLeapYear = 0;
+            }
+            indexOfMonth = (int)indexOfMonths[month];
+            int interimNumber = Convert.ToInt32(year.ToString().Remove(0, 2));
+            indexYear = interimNumber / 12 + interimNumber % 12 + interimNumber % 12 / 4;
+            return (indexYear + numberOfDay + indexOfMonth + indexCentury + indexLeapYear) % 7;
+        }
+
         public string GetNumberOfMonth(string nameOfMonth)
         {
             return numberOfMonths[nameOfMonth].ToString();
@@ -145,6 +187,35 @@ namespace Diary.Another
             {
                 return false;
             }
+        }
+
+        public string GetMonth(string numberMonth)
+        {
+            return monthsOfNumbers[numberMonth].ToString();
+        }
+
+        public string GetPreviousMonth(string thisMonth)
+        {
+            string number = numberOfMonths[thisMonth].ToString();
+            int previousNumber = Convert.ToInt32(number) - 1;
+            number = previousNumber == 0 ? "12" : previousNumber.ToString();
+            if (Convert.ToInt32(number) < 10)
+            {
+                return monthsOfNumbers["0" + number].ToString();
+            }
+            return monthsOfNumbers[number].ToString();
+        }
+
+        public string GetNextMonth(string thisMonth)
+        {
+            string number = numberOfMonths[thisMonth].ToString();
+            int nextNumber = Convert.ToInt32(number) + 1;
+            number = nextNumber == 13 ? "1" : nextNumber.ToString();
+            if (Convert.ToInt32(number) < 10)
+            {
+                return monthsOfNumbers["0" + number].ToString();
+            }
+            return monthsOfNumbers[number].ToString();
         }
     }
 }

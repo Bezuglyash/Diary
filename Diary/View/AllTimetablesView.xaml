@@ -244,6 +244,7 @@
                                     FontSize="19"
                                     Margin="12,4,64,4" 
                                     Background="White"
+                                    BorderThickness="0"
                                     HorizontalAlignment="Center">
                                     <TextBox.Resources>
                                         <Style TargetType="{x:Type TextBox}">
@@ -251,7 +252,7 @@
                                             <Setter Property="IsReadOnly" Value="True"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsChecked, ElementName=CheckDone}" Value="True">
-                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                    <Setter Property="TextDecorations" Value="Strikethrough"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -281,7 +282,9 @@
                                             <Setter Property="CornerRadius" Value="3"/>
                                         </Style>
                                     </Button.Resources>
-                                    <Button.ToolTip>Просмотреть описание к задаче</Button.ToolTip>
+                                    <Button.ToolTip>
+                                        Просмотреть описание к задаче
+                                    </Button.ToolTip>
                                     <TextBlock DockPanel.Dock="Top" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"><InlineUIContainer>
                                             <materialDesign:PackIcon Kind="TooltipText" HorizontalAlignment="Center" VerticalAlignment="Center" Height="19" Width="28"/>
                                         </InlineUIContainer></TextBlock>

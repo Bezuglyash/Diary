@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Xml.Serialization;
 
-namespace Diary.Another
+namespace Diary.Structure
 {
-    class MyDictionary <TKey, TValue>
+    [XmlRoot("Dictionary")]
+    public class MyDictionary<TKey, TValue>
     {
-        private List<TKey> keys;
-        private List<TValue> values;
+        [XmlElement(ElementName = "Keys")]
+        public List<TKey> keys;
+        [XmlElement(ElementName = "Values")]
+        public List<TValue> values;
 
         public MyDictionary()
         {
@@ -25,15 +30,15 @@ namespace Diary.Another
             values.Add(value);
         }
 
-        public TValue this [TKey key]
+        public TValue this[TKey key]
         {
-            get { return values[keys.LastIndexOf(key)]; }
+            get => values[keys.LastIndexOf(key)];
             set
             {
                 values[keys.LastIndexOf(key)] = value;
             }
         }
-
+        
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             for (int i = 0; i < keys.Count; i++)

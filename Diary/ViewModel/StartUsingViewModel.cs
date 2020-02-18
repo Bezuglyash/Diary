@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Diary.ViewModel
 {
@@ -13,46 +14,24 @@ namespace Diary.ViewModel
     {
         private string textHello;
         private DiaryLogic diaryLogic;
-        private FrameworkElement passwordControl;
         private string userName;
-        private string helloUser;
-        private string color;
         private string checkString;
-        private string content;
-        private bool isEnabled;
-        private string notClosePassword;
 
         public StartUsingViewModel() { }
         public StartUsingViewModel(DiaryLogic diaryLogic)
         {
             this.diaryLogic = diaryLogic;
             TextHello = "Приветствуем Вас в приложении \"Мой ежедневник\"!\nПредставьтесь, пожалуйста!";
-            Color = "FloralWhite";
+            Color = (Brush)new BrushConverter().ConvertFromString("FloralWhite");
             diaryLogic.NameUser = "";
             Content = "...";
             IsEnabled = false;
             NotClosePassword = "Visible";
         }
 
-        public string Content
-        {
-            get { return content; }
-            set
-            {
-                content = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string Content { get; set; }
 
-        public string TextHello
-        {
-            get { return textHello; }
-            set
-            {
-                textHello = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string TextHello { get; set; }
 
         public string UserName
         {
@@ -83,26 +62,16 @@ namespace Diary.ViewModel
                         {
                             userName = value;
                         }
-                        RaisePropertyChanged();
                     }
                 }
                 else
                 {
                     userName = value;
-                    RaisePropertyChanged();
                 }
             }
         }
 
-        public string HelloUser
-        {
-            get { return helloUser; }
-            set
-            {
-                helloUser = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string HelloUser { get; set; }
 
         public ICommand SendingUserName
         {
@@ -128,12 +97,12 @@ namespace Diary.ViewModel
                         }
                         else
                         {
-                            Color = "#FF7F50";
+                            Color = (Brush)new BrushConverter().ConvertFromString("#FF7F50");
                         }
                     }
                     else
                     {
-                        Color = "#FF7F50";
+                        Color = (Brush)new BrushConverter().ConvertFromString("#FF7F50");
                     }
                 });
             }
@@ -149,35 +118,11 @@ namespace Diary.ViewModel
             });
         }
 
-        public bool IsEnabled
-        {
-            get { return isEnabled; }
-            set
-            {
-                isEnabled = value;
-                RaisePropertyChanged();
-            }
-        }
+        public bool IsEnabled { get; set; }
 
-        public string Color
-        {
-            get { return color; }
-            set
-            {
-                color = value;
-                RaisePropertyChanged();
-            }
-        }
+        public Brush Color { get; set; }
 
-        public FrameworkElement PasswordControl
-        {
-            get { return passwordControl; }
-            set
-            {
-                passwordControl = value;
-                RaisePropertyChanged();
-            }
-        }
+        public FrameworkElement PasswordControl { get; set; }
 
         public ICommand EndWithoutPassword
         {
@@ -191,14 +136,6 @@ namespace Diary.ViewModel
             }
         }
 
-        public string NotClosePassword
-        {
-            get { return notClosePassword; }
-            set
-            {
-                notClosePassword = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string NotClosePassword { get; set; }
     }
 }

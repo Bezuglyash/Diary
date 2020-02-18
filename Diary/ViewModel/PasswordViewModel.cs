@@ -4,21 +4,20 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Diary.ViewModel
 {
     class PasswordViewModel : ViewModelBase
     {
         private DiaryLogic diaryLogic;
-        private bool isCanBack;
-        private bool isCanDelete;
-        private string stringHelper;
         private string potentialPassword;
         private int? password;
         private int countInputPassword;
         private ICommand _passwordInput;
 
         public PasswordViewModel() { }
+
         public PasswordViewModel(DiaryLogic diaryLogic)
         {
             this.diaryLogic = diaryLogic;
@@ -30,35 +29,11 @@ namespace Diary.ViewModel
             IsEnabled = true;
         }
 
-        public bool IsCanBack
-        {
-            get { return isCanBack; }
-            set
-            {
-                isCanBack = value;
-                RaisePropertyChanged();
-            }
-        }
+        public bool IsCanBack { get; set; }
 
-        public bool IsCanDelete
-        {
-            get { return isCanDelete; }
-            set
-            {
-                isCanDelete = value;
-                RaisePropertyChanged();
-            }
-        }
+        public bool IsCanDelete { get; set; }
 
-        public string PinVM
-        {
-            get { return stringHelper; }
-            set
-            {
-                stringHelper = value;
-                RaisePropertyChanged();
-            }
-        }
+        public string PinVM { get; set; }
 
         public ICommand PasswordInput
         {
@@ -83,19 +58,19 @@ namespace Diary.ViewModel
                 if (potentialPassword.Length == 1)
                 {
                     IsCanDelete = true;
-                    ColorFirst = "Gray";
+                    ColorFirst = (Brush)new BrushConverter().ConvertFromString("Gray");
                 }
                 else if (potentialPassword.Length == 2)
                 {
-                    ColorSecond = "Gray";
+                    ColorSecond = (Brush)new BrushConverter().ConvertFromString("Gray");
                 }
                 else if (potentialPassword.Length == 3)
                 {
-                    ColorThird = "Gray";
+                    ColorThird = (Brush)new BrushConverter().ConvertFromString("Gray");
                 }
                 else
                 {
-                    ColorFourth = "Gray";
+                    ColorFourth = (Brush)new BrushConverter().ConvertFromString("Gray");
                     IsEnabled = false;
                     await Task.Delay(400);
                     IsEnabled = true;
@@ -133,20 +108,20 @@ namespace Diary.ViewModel
                 potentialPassword = rewriteAfterDelete;
                 if (potentialPassword.Length == 0)
                 {
-                    ColorFirst = "White";
+                    ColorFirst = (Brush)new BrushConverter().ConvertFromString("White");
                     IsCanDelete = false;
                 }
                 else if (potentialPassword.Length == 1)
                 {
-                    ColorSecond = "White";
+                    ColorSecond = (Brush)new BrushConverter().ConvertFromString("White");
                 }
                 else if (potentialPassword.Length == 2)
                 {
-                    ColorThird = "White";
+                    ColorThird = (Brush)new BrushConverter().ConvertFromString("White");
                 }
                 else
                 {
-                    ColorFourth = "White";
+                    ColorFourth = (Brush)new BrushConverter().ConvertFromString("White");
                 }
             }
             Console.WriteLine(potentialPassword);
@@ -154,22 +129,22 @@ namespace Diary.ViewModel
 
         private void UdpatePasswordView(string color = "White", string newText = "Повторите 4-значный PIN-код", bool canDelete = false, bool canBack = true)
         {
-            ColorFirst = color;
-            ColorSecond = color;
-            ColorThird = color;
-            ColorFourth = color;
+            ColorFirst = (Brush)new BrushConverter().ConvertFromString(color);
+            ColorSecond = (Brush)new BrushConverter().ConvertFromString(color); ;
+            ColorThird = (Brush)new BrushConverter().ConvertFromString(color); ;
+            ColorFourth = (Brush)new BrushConverter().ConvertFromString(color); ;
             IsCanDelete = canDelete;
             PinVM = newText;
             IsCanBack = canBack;
         }
 
-        public string ColorFirst { get; set; }
+        public Brush ColorFirst { get; set; }
 
-        public string ColorSecond { get; set; }
+        public Brush ColorSecond { get; set; }
 
-        public string ColorThird { get; set; }
+        public Brush ColorThird { get; set; }
 
-        public string ColorFourth { get; set; }
+        public Brush ColorFourth { get; set; }
 
         public bool IsEnabled { get; set; }
     }
