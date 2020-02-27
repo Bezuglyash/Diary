@@ -45,13 +45,13 @@ namespace Diary.Another.Tracker
                 if (Convert.ToInt32(dayThis) - numberOfWeek + i > 0)
                 {
                     string dayString = IsSmallNumber(Convert.ToInt32(dayThis) - numberOfWeek + i) ? 
-                        "0" + (Convert.ToInt32(dayThis) - numberOfWeek + i).ToString() :
+                        "0" + (Convert.ToInt32(dayThis) - numberOfWeek + i) :
                         (Convert.ToInt32(dayThis) - numberOfWeek + i).ToString();
 
-                    ListDays.Add(dayString + "." + month + "." + year.ToString());
+                    ListDays.Add(dayString + "." + month + "." + year);
                     if (i == 1)
                     {
-                        Week = (Convert.ToInt32(dayThis) - numberOfWeek + i).ToString() + " " + monthName.ToLower() + " - ";
+                        Week = (Convert.ToInt32(dayThis) - numberOfWeek + i) + " " + monthName.ToLower() + " - ";
                     }
                 }
                 else
@@ -59,27 +59,29 @@ namespace Diary.Another.Tracker
                     int numberPreviousMonth = day.GetNumberOfDaysInThisMonth(day.GetPreviousMonth(monthName), year);
 
                     string dayString = IsSmallNumber(numberPreviousMonth + (Convert.ToInt32(dayThis) - numberOfWeek) + i) ?
-                        "0" + (numberPreviousMonth + (Convert.ToInt32(dayThis) - numberOfWeek) + i).ToString() :
+                        "0" + (numberPreviousMonth + (Convert.ToInt32(dayThis) - numberOfWeek) + i) :
                         (numberPreviousMonth + (Convert.ToInt32(dayThis) - numberOfWeek) + i).ToString();
 
                     if (day.GetPreviousMonth(monthName) == "Декабря")
                     {
-                        ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetPreviousMonth(monthName)) + "." + (year - 1).ToString());
+                        ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetPreviousMonth(monthName)) + "." + (year - 1));
                     }
                     else
                     {
-                        ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetPreviousMonth(monthName)) + "." + year.ToString());
+                        ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetPreviousMonth(monthName)) + "." + year);
                     }
 
                     if (i == 1)
                     {
-                        Week = (numberPreviousMonth + (Convert.ToInt32(dayThis) - numberOfWeek) + i).ToString() + " " + day.GetPreviousMonth(monthName).ToLower() + " - ";
+                        Week = (numberPreviousMonth + (Convert.ToInt32(dayThis) - numberOfWeek) + i) + " " + day.GetPreviousMonth(monthName).ToLower() + " - ";
                     }
                 }
             }
             if (numberOfWeek == 7)
             {
-                Week += dayThis + " " + monthName.ToLower() + " " + year.ToString();
+                Week += dayThis + " " + monthName.ToLower() + " " + year;
+                string dayThisString = IsSmallNumber(Convert.ToInt32(dayThis)) ? "0" + Convert.ToInt32(dayThis) : Convert.ToInt32(dayThis).ToString();
+                ListDays.Add(dayThisString + "." + month + "." + year);
             }
             else
             {
@@ -87,33 +89,32 @@ namespace Diary.Another.Tracker
                 {
                     if (Convert.ToInt32(dayThis) + i <= numberOfMonth)
                     {
-                        string dayString = IsSmallNumber(Convert.ToInt32(dayThis) + i) ? "0" + (Convert.ToInt32(dayThis) + i).ToString() : (Convert.ToInt32(dayThis) + i).ToString();
+                        string dayString = IsSmallNumber(Convert.ToInt32(dayThis) + i) ? "0" + (Convert.ToInt32(dayThis) + i) : (Convert.ToInt32(dayThis) + i).ToString();
 
-                        ListDays.Add(dayString + "." + month + "." + year.ToString());
+                        ListDays.Add(dayString + "." + month + "." + year);
                         if (i == 7 - numberOfWeek)
                         {
-                            Week += (Convert.ToInt32(dayThis) + i).ToString() + " " + monthName.ToLower() + " " + year.ToString();
+                            Week += (Convert.ToInt32(dayThis) + i) + " " + monthName.ToLower() + " " + year;
                         }
                     }
                     else
                     {
                         string dayString = IsSmallNumber(Convert.ToInt32(dayThis) + i - numberOfMonth) ? 
-                            "0" + (Convert.ToInt32(dayThis) + i - numberOfMonth).ToString() : 
-                            (Convert.ToInt32(dayThis) + i - numberOfMonth).ToString();
+                            "0" + (Convert.ToInt32(dayThis) + i - numberOfMonth) : (Convert.ToInt32(dayThis) + i - numberOfMonth).ToString();
 
                         int yearExactly = year;
                         if (day.GetNextMonth(monthName) == "Января")
                         {
                             yearExactly += 1;
-                            ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetNextMonth(monthName)) + "." + yearExactly.ToString());
+                            ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetNextMonth(monthName)) + "." + yearExactly);
                         }
                         else
                         {
-                            ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetNextMonth(monthName)) + "." + yearExactly.ToString());
+                            ListDays.Add(dayString + "." + day.GetNumberOfMonth(day.GetNextMonth(monthName)) + "." + yearExactly);
                         }
                         if (i == 7 - numberOfWeek)
                         {
-                            Week += (Convert.ToInt32(dayThis) + i - numberOfMonth).ToString() + " " + day.GetNextMonth(monthName).ToLower() + " " + yearExactly.ToString();
+                            Week += (Convert.ToInt32(dayThis) + i - numberOfMonth) + " " + day.GetNextMonth(monthName).ToLower() + " " + yearExactly;
                         }
                     }
                 }

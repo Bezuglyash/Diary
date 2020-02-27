@@ -1,0 +1,206 @@
+﻿<UserControl x:Class="Diary.View.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Diary.ViewModel"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignWidth="667" Focusable="False" d:DesignHeight="699" Background="FloralWhite">
+
+    <UserControl.DataContext>
+        <vm:SettingsViewModel/>
+    </UserControl.DataContext>
+
+
+    <Grid>
+        <Border
+            Focusable="False"
+            Background="LightGoldenrodYellow"
+            BorderThickness="1" 
+            Margin="55,181,67,313"
+            CornerRadius="12">
+            <Canvas>
+                <TextBox
+                    IsTabStop="False"
+                    x:Name="TextBox"
+                    Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    MaxLength="30"
+                    Width="317"
+                    FontSize="19"
+                    BorderThickness="0,0,0,1"
+                    Height="28"
+                    Padding="2, 0"
+                    Canvas.Left="96"
+                    IsReadOnly="{Binding IsReadOnly}"
+                    Background="{Binding Color}"
+                    Canvas.Top="51">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SendingUserName}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <TextBlock
+                    Focusable="False"
+                    Text="Ваше имя"
+                    IsHitTestVisible="False" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    Foreground="Gray" 
+                    Width="140"
+                    FontSize="19" 
+                    Height="28"
+                    Padding="4, 1"
+                    Canvas.Left="104" 
+                    Canvas.Top="51">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger  Binding="{Binding Text, ElementName=TextBox}" Value="">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <Button
+                    Focusable="False"
+                    Command="{Binding SendingUserName}"
+                    x:Name="Send"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Content="{Binding Text}"
+                    Width="121"
+                    FontSize="19"
+                    Height="28"
+                    BorderThickness="0"
+                    Opacity="0.75"
+                    Background="White"
+                    Canvas.Left="417" 
+                    Canvas.Top="49">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label
+                    Focusable="False"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    FontSize="19" 
+                    Content="Никнейм:" 
+                    Canvas.Left="2" 
+                    Canvas.Top="51"
+                    Padding="4, 1"
+                    Width="93"/>
+
+                <Label
+                    Focusable="False"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    FontSize="19" 
+                    Content="Пароль:" 
+                    Canvas.Left="3" 
+                    Canvas.Top="109"
+                    Padding="4, 1"
+                    Width="78"/>
+                <TextBox
+                    Focusable="False"
+                    x:Name="PIN"
+                    Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="97"
+                    FontSize="19"
+                    BorderThickness="0,0,0,1"
+                    Background="LightGoldenrodYellow"
+                    Height="28"
+                    Padding="2, 0"
+                    Canvas.Left="84"
+                    Canvas.Top="108">
+                </TextBox>
+                <Button
+                    Focusable="False"
+                    Command="{Binding AddOrDeletePassword}"
+                    x:Name="Send_Copy"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Width="176"
+                    FontSize="19"
+                    Height="28"
+                    BorderThickness="0"
+                    Opacity="0.75"
+                    Background="White"
+                    Canvas.Left="188" 
+                    Canvas.Top="107">
+                    <Button.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Content" Value="Выключить пароль"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=PIN}" Value="-">
+                                    <Setter Property="Content" Value="Включить пароль"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Button
+                    Focusable="False"
+                    Command="{Binding RewritePassword}"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Content="Изменить пароль"
+                    Width="167"
+                    FontSize="19"
+                    Height="28"
+                    BorderThickness="0"
+                    Opacity="0.75"
+                    Background="White"
+                    Canvas.Left="369" 
+                    Canvas.Top="106">
+                    <Button.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Text, ElementName=PIN}" Value="-">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+
+                <Label
+                    Focusable="False"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    FontSize="19" 
+                    Content="Карточка пользователя" 
+                    Canvas.Left="174"
+                    Padding="4, 1"
+                    Width="211" 
+                    Foreground="Gray"
+                    Canvas.Top="3"/>
+            </Canvas>
+        </Border>
+
+        <ContentControl Focusable="False" Panel.ZIndex="0" Content="{Binding PasswordViews}"/>
+    </Grid>
+</UserControl>

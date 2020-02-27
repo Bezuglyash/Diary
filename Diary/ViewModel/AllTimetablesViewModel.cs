@@ -62,7 +62,7 @@ namespace Diary.ViewModel
             selectedMonth = calendar.GetMonthNow();
             selectedYear = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
             pastSelect = 0;
-            StandartActions(Convert.ToInt32(DateTime.Now.ToString("dd")));
+            StandardActions(Convert.ToInt32(DateTime.Now.ToString("dd")));
             dispatcher = Dispatcher.CurrentDispatcher;
             pastIndex = -1;
             IsClose = false;
@@ -222,14 +222,14 @@ namespace Diary.ViewModel
 
         public bool IsClose { get; set; }
 
-        async private void WaitingNextStepAsync()
+        private async void WaitingNextStepAsync()
         {
             await Task.Run( () =>
             {
                 while (IsClose != true && newTimetableViewModel.Condition != "Collapsed") { }
                 if (newTimetableViewModel.Condition == "Collapsed")
                 {
-                    StandartActions(pastSelect);
+                    StandardActions(pastSelect);
                 }
             });
         }
@@ -346,7 +346,7 @@ namespace Diary.ViewModel
             dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
             {
                 timetableForTheDaysLogic.Distribution(ToList((int)id), ZeroOrNull(pastSelect) + pastSelect.ToString() + "." + calendar.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString());
-                StandartActions(pastSelect);
+                StandardActions(pastSelect);
             });
         }
 
@@ -356,7 +356,7 @@ namespace Diary.ViewModel
             {
                 timetableForTheDaysLogic.Distribution(new List<TaskForTheDay>() { ElementByIndex(0) }, ZeroOrNull(pastSelect) + pastSelect.ToString() + "." + calendar.GetNumberOfMonth(SelectedMonth) + "." + SelectedYear.ToString());
                 ListOfTasks.Clear();
-                StandartActions(pastSelect);
+                StandardActions(pastSelect);
             });
         }
 
@@ -398,7 +398,7 @@ namespace Diary.ViewModel
             }
         }
 
-        private void StandartActions(int day)
+        private void StandardActions(int day)
         {
             ViewCalendar();
             ViewTasks(day);

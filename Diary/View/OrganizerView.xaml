@@ -7,9 +7,11 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignWidth="679" Focusable="False" d:DesignHeight="699" Background="FloralWhite">
+
     <UserControl.DataContext>
         <vm:OrganizerViewModel/>
     </UserControl.DataContext>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="644"></RowDefinition>

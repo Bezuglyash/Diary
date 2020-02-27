@@ -12,6 +12,7 @@ namespace Diary.ViewModel
     {
         private NotesLogic notesLogic;
         private ImportantDatesLogic importantDatesLogic;
+        private BasketLogic basketLogic;
         private NewNoteViewModel newNoteViewModel;
         private AllNotesViewModel allNotesViewModel;
         private NewImportantDateViewModel newImportantDateViewModel;
@@ -20,10 +21,11 @@ namespace Diary.ViewModel
 
         public MyNotesViewModel() { }
 
-        public MyNotesViewModel(NotesLogic notesLogic, ImportantDatesLogic importantDatesLogic)
+        public MyNotesViewModel(NotesLogic notesLogic, ImportantDatesLogic importantDatesLogic, BasketLogic basketLogic)
         {
             this.notesLogic = notesLogic;
             this.importantDatesLogic = importantDatesLogic;
+            this.basketLogic = basketLogic;
             NotesLogic = this.notesLogic;
             ImportantDatesLogic = this.importantDatesLogic;
         }
@@ -38,7 +40,7 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    allNotesViewModel = new AllNotesViewModel(notesLogic);
+                    allNotesViewModel = new AllNotesViewModel(notesLogic, basketLogic);
                     AddOrViewExisting = new AllNotesView();
                     IsClose = false;
                     AddOrViewExisting.DataContext = allNotesViewModel;

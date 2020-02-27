@@ -104,6 +104,23 @@ namespace Diary.Another
             };
         }
 
+        public static string GetDay(string date)
+        {
+            Hashtable daysWeek = new Hashtable()
+            {
+                { 1, "Пн" },
+                { 2, "Вт" },
+                { 3, "Ср" },
+                { 4, "Чт" },
+                { 5, "Пт" },
+                { 6, "Сб" },
+                { 0, "Вс" }
+            };
+            return daysWeek[new Day().GetNumberDayOfWeek(Convert.ToInt32(date.Split(new char[] {'.'})[0]),
+                date.Split(new char[] {'.'})[1],
+                Convert.ToInt32(date.Split(new char[] {'.'})[2]))].ToString();
+        }
+
         public string GetMonthNow()
         {
             Months month = (Months)Convert.ToInt32(DateTime.Now.ToString("MM"));
@@ -157,6 +174,10 @@ namespace Diary.Another
             else
             {
                 indexCentury = 0;
+            }
+            if (Int32.TryParse(month, out int result))
+            {
+                month = GetMonth(month);
             }
             if ((month == "Января" || month == "Февраля") && IsThisLeapYear(year) == true)
             {

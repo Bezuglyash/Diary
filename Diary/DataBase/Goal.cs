@@ -10,7 +10,10 @@ namespace Diary.DataBase
         [MaxLength(40), NotNull]
         public string Title { get; set; }
 
-        public string Discription { get; set; }
+        public string Description { get; set; }
+
+        [MaxLength(10), NotNull]
+        public string DateCreate { get; set; }
 
         [NotNull]
         public int IsDone { get; set; }

@@ -16,6 +16,7 @@ namespace Diary.ViewModel
     class AllNotesViewModel : ViewModelBase
     {
         private NotesLogic notesLogic;
+        private BasketLogic basketLogic;
         private EditNoteViewModel editNoteViewModel;
         private Dispatcher dispatcher;
         private bool isClose;
@@ -23,16 +24,17 @@ namespace Diary.ViewModel
 
         public AllNotesViewModel() { }
 
-        public AllNotesViewModel(NotesLogic notesLogic)
+        public AllNotesViewModel(NotesLogic notesLogic, BasketLogic basketLogic)
         {
             this.notesLogic = notesLogic;
+            this.basketLogic = basketLogic;
             DeleteNoteCommand = new RelayCommand<int>(DeleteNote);
             EditAndViewNoteCommand = new RelayCommand<int>(EditAndViewNote);
             Condition = "Visible";
             isClose = false;
             dispatcher = Dispatcher.CurrentDispatcher;
             TextSearch = "";
-            Notes = new ObservableCollection<Note>(notesLogic.Notes);
+            Notes = new ObservableCollection<Note>(this.notesLogic.Notes);
             Count = Notes.Count;
         }
 
@@ -45,27 +47,6 @@ namespace Diary.ViewModel
         public RelayCommand<int> DeleteNoteCommand { get; }
 
         public RelayCommand<int> EditAndViewNoteCommand { get; }
-
-        private void DeleteNote(int idNoteWhichMustDelete)
-        {
-            if (new MessageBoxViewModel("Вы действительно желаете удалить запись?", "Удаление").ShowMessage() == true)
-            {
-                int index = notesLogic.GetIndexOfList(idNoteWhichMustDelete);
-                Notes.RemoveAt(index);
-                Thread thread = new Thread(new ParameterizedThreadStart(UpdateNote));
-                thread.Start(idNoteWhichMustDelete);
-            }
-        }
-
-        private void EditAndViewNote(int idNoteWhichMustDelete)
-        {
-            editNoteViewModel = new EditNoteViewModel(notesLogic, idNoteWhichMustDelete);
-            GoToViewAndEditNote = new EditNoteView();
-            TextSearch = "";
-            IsClose = false;
-            GoToViewAndEditNote.DataContext = editNoteViewModel;
-            WaitUpdateAsync(idNoteWhichMustDelete);
-        }
 
         public string TextSearch
         {
@@ -80,15 +61,6 @@ namespace Diary.ViewModel
                     Count = Notes.Count;
                 }
             }
-        }
-
-        async public void WaitUpdateAsync(int id)
-        {
-            await Task.Run(() =>
-            {
-                while (editNoteViewModel.Condition != "Collapsed") { }
-                Notes = new ObservableCollection<Note>(notesLogic.Notes);
-            });
         }
 
         public ICommand BackSpace
@@ -117,11 +89,43 @@ namespace Diary.ViewModel
             }
         }
 
+        private void DeleteNote(int idNoteWhichMustDelete)
+        {
+            if (new MessageBoxViewModel("Вы действительно хотите удалить запись в корзину?", "Удаление").ShowMessage() == true)
+            {
+                Note note = Notes[notesLogic.GetIndexOfList(idNoteWhichMustDelete)];
+                Notes.Remove(note);
+                Count = Notes.Count;
+                Thread thread = new Thread(new ParameterizedThreadStart(UpdateNote));
+                thread.Start(idNoteWhichMustDelete);
+                basketLogic.AddNewNoteAsync(note.NoteTitle, note.NoteContent, notesLogic.GetStandardDate(idNoteWhichMustDelete));
+            }
+        }
+
+        private void EditAndViewNote(int idNoteWhichMustDelete)
+        {
+            editNoteViewModel = new EditNoteViewModel(notesLogic, idNoteWhichMustDelete);
+            GoToViewAndEditNote = new EditNoteView();
+            TextSearch = "";
+            IsClose = false;
+            GoToViewAndEditNote.DataContext = editNoteViewModel;
+            WaitUpdateAsync(idNoteWhichMustDelete);
+        }
+
         private void UpdateNote(object id)
         {
             dispatcher.BeginInvoke(DispatcherPriority.Normal, (ThreadStart)delegate ()
             {
                 notesLogic.DeleteNote(Convert.ToInt32(id));
+            });
+        }
+
+        private async void WaitUpdateAsync(int id)
+        {
+            await Task.Run(() =>
+            {
+                while (editNoteViewModel.Condition != "Collapsed") { }
+                Notes = new ObservableCollection<Note>(notesLogic.Notes);
             });
         }
     }

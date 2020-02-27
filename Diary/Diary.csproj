@@ -135,9 +135,10 @@
     <Compile Include="Another\Event.cs" />
     <Compile Include="Another\Tracker\DataHabit.cs" />
     <Compile Include="Another\IDate.cs" />
+    <Compile Include="DataBase\Basket.cs" />
     <Compile Include="DataBase\Goal.cs" />
+    <Compile Include="Model\BasketLogic.cs" />
     <Compile Include="Model\GoalsLogic.cs" />
-    <Compile Include="Structure\MyDictionary.cs" />
     <Compile Include="Another\TaskForTheDay.cs" />
     <Compile Include="Another\Tracker\WeekHabit.cs" />
     <Compile Include="DataBase\HabitTracker\HabitTracker.cs" />
@@ -148,29 +149,52 @@
     <Compile Include="DataBase\User.cs" />
     <Compile Include="Model\HabitsTrackerLogic.cs" />
     <Compile Include="Model\TimetableForTheDaysLogic.cs" />
+    <Compile Include="ViewModel\AllGoalsViewModel.cs" />
     <Compile Include="ViewModel\AllHabitsTrackerViewModel.cs" />
     <Compile Include="ViewModel\AllTimetablesViewModel.cs" />
+    <Compile Include="ViewModel\BasketViewModel.cs" />
     <Compile Include="ViewModel\DayViewModel.cs" />
     <Compile Include="Model\ImportantDatesLogic.cs" />
     <Compile Include="Model\NotesLogic.cs" />
     <Compile Include="ViewModel\AllImportantDatesViewModel.cs" />
     <Compile Include="ViewModel\AllNotesViewModel.cs" />
+    <Compile Include="ViewModel\EditGoalViewModel.cs" />
     <Compile Include="ViewModel\EditNoteViewModel.cs" />
+    <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\MessageBoxViewModel.cs" />
     <Compile Include="ViewModel\MyNotesViewModel.cs" />
+    <Compile Include="ViewModel\NewGoalViewModel.cs" />
     <Compile Include="ViewModel\NewHabitTrackerViewModel.cs" />
     <Compile Include="ViewModel\NewImportantDateViewModel.cs" />
     <Compile Include="ViewModel\NewNoteViewModel.cs" />
     <Compile Include="ViewModel\NewTimetableViewModel.cs" />
     <Compile Include="ViewModel\OrganizerViewModel.cs" />
+    <Compile Include="ViewModel\PasswordInputViewModel.cs" />
     <Compile Include="ViewModel\PasswordViewModel.cs" />
     <Compile Include="ViewModel\PlannerViewModel.cs" />
+    <Compile Include="ViewModel\SeeBasketViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="ViewModel\StartUsingViewModel.cs" />
+    <Compile Include="View\AllGoalsView.xaml.cs">
+      <DependentUpon>AllGoalsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AllHabitsTrackerView.xaml.cs">
       <DependentUpon>AllHabitsTrackerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\AllTimetablesView.xaml.cs">
       <DependentUpon>AllTimetablesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\BasketView.xaml.cs">
+      <DependentUpon>BasketView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditGoalView.xaml.cs">
+      <DependentUpon>EditGoalView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainPageView.xaml.cs">
+      <DependentUpon>MainPageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewGoalView.xaml.cs">
+      <DependentUpon>NewGoalView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\NewHabitTrackerView.xaml.cs">
       <DependentUpon>NewHabitTrackerView.xaml</DependentUpon>
@@ -199,20 +223,49 @@
     <Compile Include="View\OrganizerView.xaml.cs">
       <DependentUpon>OrganizerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PasswordInputView.xaml.cs">
+      <DependentUpon>PasswordInputView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PasswordView.xaml.cs">
       <DependentUpon>PasswordView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PlannerView.xaml.cs">
       <DependentUpon>PlannerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\SeeBasketView.xaml.cs">
+      <DependentUpon>SeeBasketView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StartUsingThisDiaryView.xaml.cs">
       <DependentUpon>StartUsingThisDiaryView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\AllGoalsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AllHabitsTrackerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AllTimetablesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BasketView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditGoalView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainPageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewGoalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -266,11 +319,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\PasswordInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\PasswordView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\PlannerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SeeBasketView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -297,6 +362,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

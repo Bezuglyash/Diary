@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Xml.Serialization;
 using Diary.Another.Tracker;
-using Diary.Structure;
 
 namespace Diary.Model
 {
@@ -154,8 +153,7 @@ namespace Diary.Model
                         {
                             if (dateInList.MonthsCheckList != null)
                             {
-                                if (dateInList.MonthsCheckList[Convert.ToInt32(date.Split(new char[] {'.'})[1]) - 1]
-                                    .IndexOf(Convert.ToInt32(date.Split(new char[] {'.'})[0])) == -1)
+                                if (dateInList.MonthsCheckList[Convert.ToInt32(date.Split(new char[] {'.'})[1]) - 1].IndexOf(Convert.ToInt32(date.Split(new char[] {'.'})[0])) == -1)
                                 {
                                     dateInList.MonthsCheckList[Convert.ToInt32(date.Split(new char[] {'.'})[1]) - 1].Add(Convert.ToInt32(date.Split(new char[] {'.'})[0]));
                                 }
@@ -288,7 +286,7 @@ namespace Diary.Model
                 {
                     foreach (var dateWeek in dates)
                     {
-                        if (Convert.ToInt32(dateWeek.Split(new char[] { '.' })[1]) > date.MonthsCheckList.Count)
+                        if (Convert.ToInt32(dateWeek.Split(new char[] { '.' })[2]) >= date.Year && Convert.ToInt32(dateWeek.Split(new char[] { '.' })[1]) > date.MonthsCheckList.Count)
                         {
                             int size = date.MonthsCheckList.Count;
                             for (int i = 0; i < Convert.ToInt32(dateWeek.Split(new char[] { '.' })[1]) - size; i++)

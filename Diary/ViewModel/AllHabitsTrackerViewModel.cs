@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Input;
@@ -34,6 +32,7 @@ namespace Diary.ViewModel
             month = Convert.ToInt32(DateTime.Now.ToString("MM"));
             year = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
             WeekHabits = new ObservableCollection<WeekHabit>();
+            WeekHabit.ListDays.Clear();
             WeekHabit.SetWeek(DateTime.Now.ToString("dd"), DateTime.Now.ToString("MM"), year);
             DayMonth = WeekHabit.Week;
             Completion();
@@ -50,6 +49,8 @@ namespace Diary.ViewModel
         }
 
         public ObservableCollection<WeekHabit> WeekHabits { get; set; }
+
+        public int Count { get; set; }
 
         public string Condition { get; set; }
 
@@ -207,6 +208,7 @@ namespace Diary.ViewModel
         private void Completion()
         {
             WeekHabits = habitsTrackerLogic.GetWeekHabits(WeekHabit.ListDays);
+            Count = WeekHabits.Count;
         }
 
         private void UpdateTracker(string text, string date)

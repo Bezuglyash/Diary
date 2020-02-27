@@ -3,6 +3,9 @@ using GalaSoft.MvvmLight;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.IO.Packaging;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Diary.Model
 {
@@ -29,42 +32,95 @@ namespace Diary.Model
 
         public bool ItWasOpen { get; }
 
-        public string NameUser
+        public void AddName(string text)
         {
-            get { return user.Name; }
-            set
+            user.Name = text;
+        }
+
+        public void AddPassword(int? pin)
+        {
+            user.Password = pin;
+            user.IsHavePassword = 1;
+            try
             {
-                user.Name = value;
+                if (!dataBase.Table<User>().Any())
+                {
+                    AddDataAsync();
+                }
+                else
+                {
+                    UpdateDataAsync();
+                }
+            }
+            catch (Exception)
+            {
+                dataBase = new SQLiteConnection(NAME_DATA_BASE, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create, true);
+                AddDataAsync();
             }
         }
 
-        public int? UserPassword
+        public void AddIsHavePassword(int number)
         {
-            get { return user.Password; }
-            set
+            user.IsHavePassword = number;
+            if (!dataBase.Table<User>().Any())
             {
-                user.Password = value;
-                SaveUser(1);
+                AddDataAsync();
             }
+            else
+            {
+                UpdateDataAsync();
+            }
+        }
+
+        public string GetName()
+        {
+            return user.Name;
+        }
+
+        public int? GetPassword()
+        {
+            return user.Password;
+        }
+
+        public bool IsHavePassword()
+        {
+            return user.IsHavePassword == 1;
+        }
+
+        public void RewriteName(string name)
+        {
+            user.Name = name;
+            UpdateDataAsync();
+        }
+
+        public void UpdatePassword(int? pin, int number)
+        {
+            user.Password = pin;
+            user.IsHavePassword = number;
+            UpdateDataAsync();
         }
 
         public void CreateDataBaseAndTables()
         {
-            dataBase = new SQLiteConnection(NAME_DATA_BASE, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create, true);
             dataBase.CreateTable<User>();
             dataBase.CreateTable<Note>();
             dataBase.CreateTable<ImportantDate>();
             dataBase.CreateTable<TimetableForTheDay>();
             HabitsTrackerLogic.CreateXmlFile();
             dataBase.CreateTable<Goal>();
-        }
-
-        public void SaveUser(int isHavePassword = 0)
-        {
-            user.IsHavePassword = isHavePassword;
-            dataBase.Insert(user);
+            dataBase.CreateTable<Basket>();
         }
 
         public SQLiteConnection GetDataBase() { return dataBase; }
+
+        private async void AddDataAsync()
+        {
+            await Task.Run(() => { dataBase.Insert(user); });
+        }
+
+        private async void UpdateDataAsync()
+        {
+            await Task.Run(() => { dataBase.Update(user); });
+        }
     }
 }

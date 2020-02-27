@@ -7,9 +7,11 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="Ежедневник" Height="728" Width="728" Focusable="False" WindowStartupLocation="CenterScreen" Background="FloralWhite" ResizeMode="CanMinimize">
+
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+
     <Window.Resources>
         <Storyboard x:Key="OpenMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="Menu">
@@ -44,6 +46,9 @@
         <EventTrigger RoutedEvent="ButtonBase.Click"  SourceName="ButtonSettings">
             <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
         </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click"  SourceName="ButtonBasket">
+            <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
+        </EventTrigger>
     </Window.Triggers>
 
     <Grid>
@@ -55,9 +60,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="28"></RowDefinition>
             <RowDefinition Height="28"></RowDefinition>
+            <RowDefinition Height="28"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Grid Panel.ZIndex="1" Focusable="False" x:Name="Menu" Width="{Binding WidthMenu, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="3" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="NavajoWhite">
+        <Grid Panel.ZIndex="1" Focusable="False" x:Name="Menu" Width="{Binding WidthMenu, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="4" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Stretch" Background="NavajoWhite">
             <StackPanel>
                 <Button 
                     x:Name="MenuButton"
@@ -77,7 +83,7 @@
                 <Button
                     Focusable="False"
                     x:Name="ButtonMain"
-                    Command="{Binding OpenMyNotesControl}"
+                    Command="{Binding OpenMainPage}"
                     BorderThickness="0"
                     Background="{x:Null}"
                     BorderBrush="{x:Null}">
@@ -105,7 +111,7 @@
                 <Button
                     Focusable="False"
                     x:Name="ButtonSettings"
-                    Command="{Binding OpenMyNotesControl}"
+                    Command="{Binding OpenSettings}"
                     BorderThickness="0"
                     Background="{x:Null}" 
                     BorderBrush="{x:Null}">
@@ -116,8 +122,23 @@
                         <Label Content="Настройки" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="12" Width="173" Height="40"/>
                     </StackPanel>
                 </Button>
+                <Button
+                    Focusable="False"
+                    x:Name="ButtonBasket"
+                    Command="{Binding OpenBasket}"
+                    BorderThickness="0"
+                    Background="{x:Null}" 
+                    BorderBrush="{x:Null}">
+                    <StackPanel Orientation="Horizontal" Margin="7, 0, 0, 0" Height="40" Width="218">
+                        <Label HorizontalContentAlignment="Left" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40" Width="40">
+                            <materialDesign:PackIcon Kind="Delete" HorizontalAlignment="Center" VerticalAlignment="Center" Height="40"/>
+                        </Label>
+                        <Label Content="Корзина" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="12" Width="173" Height="40"/>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </Grid>
+
         <Label
             Content="{Binding Greeting}"
             FontSize="19"
@@ -127,9 +148,10 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Grid.ColumnSpan="3"
-            Grid.RowSpan="3"
+            Grid.RowSpan="4"
             HorizontalContentAlignment="Center"/>
-        <ContentControl Focusable="False" Panel.ZIndex="1" Grid.RowSpan="3" Grid.ColumnSpan="3" Content="{Binding DiaryStartUsing}"/>
-        <ContentControl Focusable="False" Panel.ZIndex="0" Grid.RowSpan="3" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding DiaryOperation}"/>
+
+        <ContentControl Focusable="False" Panel.ZIndex="1" Grid.Row="0" Grid.RowSpan="4" Grid.ColumnSpan="3" Content="{Binding DiaryStartUsing}"/>
+        <ContentControl Focusable="False" Panel.ZIndex="0" Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Grid.ColumnSpan="2" Content="{Binding DiaryOperation}"/>
     </Grid>
 </Window>

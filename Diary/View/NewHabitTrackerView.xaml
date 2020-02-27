@@ -65,6 +65,11 @@
                                     <TextBox.Resources>
                                         <Style TargetType="TextBox">
                                             <Setter Property="IsReadOnly" Value="{Binding IsOnlyRead}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsOnlyRead}" Value="True">
+                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
                                         </Style>
                                         <Style TargetType="Border">
                                             <Setter Property="CornerRadius" Value="3"/>

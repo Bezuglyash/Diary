@@ -1,88 +1,86 @@
-﻿using Diary.DataBase;
-using GalaSoft.MvvmLight;
+﻿using System;
 using System.Collections.Generic;
-using SQLite;
 using System.Text.RegularExpressions;
-using System;
+using System.Threading.Tasks;
 using Diary.Another;
+using Diary.DataBase;
+using GalaSoft.MvvmLight;
+using SQLite;
 
 namespace Diary.Model
 {
-    enum Months
+    class BasketLogic : ViewModelBase
     {
-        Января = 1,
-        Февраля = 2,
-        Марта = 3,
-        Апреля = 4,
-        Мая = 5,
-        Июня = 6,
-        Июля = 7,
-        Августа = 8,
-        Сентября = 9,
-        Октября = 10,
-        Ноября = 11,
-        Декабря = 12
-    }
+        enum Months
+        {
+            Января = 1,
+            Февраля = 2,
+            Марта = 3,
+            Апреля = 4,
+            Мая = 5,
+            Июня = 6,
+            Июля = 7,
+            Августа = 8,
+            Сентября = 9,
+            Октября = 10,
+            Ноября = 11,
+            Декабря = 12
+        }
 
-    class NotesLogic : ViewModelBase
-    {
         private SQLiteConnection dataBase;
-        private IEnumerable<Note> storageNotes;
+        private IEnumerable<Basket> storageNotes;
 
-        public NotesLogic(SQLiteConnection dataBase)
+        public BasketLogic(SQLiteConnection dataBase)
         {
             this.dataBase = dataBase;
-            Notes = this.dataBase.Table<Note>();
+            Notes = this.dataBase.Table<Basket>();
             BubbleSortForDates();
             RewriteDate();
             storageNotes = Notes;
-            NumberOfNotes = this.dataBase.Table<Note>().Count();
+            NumberOfNotes = this.dataBase.Table<Basket>().Count();
         }
 
-        public IEnumerable<Note> Notes { get; set; }
+        public IEnumerable<Basket> Notes { get; set; }
 
         public int NumberOfNotes { get; set; }
 
-        public void AddNewNote(string content, string date)
+        public async void AddNewNoteAsync(string title, string content, string date)
         {
-            Note note = new Note();
-            note.NoteContent = content;
-            note.NoteTitle = GetPreparedTitle(content);
-            note.CreationOrEditingDate = date;
-            dataBase.Insert(note);
-            StandardSteps();
+            await Task.Run(() =>
+            {
+                Basket note = new Basket();
+                note.NoteContent = content;
+                note.NoteTitle = title;
+                note.CreationOrEditingDate = date;
+                dataBase.Insert(note);
+                StandardSteps();
+            });
         }
 
-        public void UpdateData(int id, string text, string date)
+        public void Recover(int id)
         {
-            Note note = GetElementById(id);
-            note.NoteTitle = GetPreparedTitle(text);
-            note.NoteContent = text;
-            note.CreationOrEditingDate = date;
-            dataBase.Update(note);
-            StandardSteps();
+            RecoverAsync(GetElementById(id));
         }
 
         public void DeleteNote(int id)
         {
-            dataBase.Delete<Note>(GetElementById(id).Id);
+            dataBase.Delete<Basket>(GetElementById(id).Id);
             StandardSteps();
         }
 
-        public string GetNoteContent(int id)
+        public async void AllDeleteAsync()
         {
-            return GetElementById(id).NoteContent;
-        }
-
-        public string GetDateInternal(int id)
-        {
-            return GetElementById(id).CreationOrEditingDate;
+            await Task.Run(() =>
+            {
+                dataBase.DeleteAll<Basket>();
+                StandardSteps();
+            });
         }
 
         public int GetIndexOfList(int id)
         {
             int index = 0;
-            IEnumerator<Note> iterator = Notes.GetEnumerator();
+            IEnumerator<Basket> iterator = Notes.GetEnumerator();
             while (iterator.MoveNext())
             {
                 if (id == iterator.Current.Id)
@@ -94,12 +92,12 @@ namespace Diary.Model
             return -1;
         }
 
-        public void Searching (string txt)
+        public void Searching(string txt)
         {
             Notes = storageNotes;
             int index = 0;
-            List<Note> notes = new List<Note>();
-            Note note;
+            List<Basket> notes = new List<Basket>();
+            Basket note;
             note = GetElementByIndex(index);
             while (note != null)
             {
@@ -120,9 +118,22 @@ namespace Diary.Model
             Notes = notes;
         }
 
+        public Basket GetBasket(int id)
+        {
+            IEnumerator<Basket> iterator = Notes.GetEnumerator();
+            while (iterator.MoveNext())
+            {
+                if (iterator.Current.Id == id)
+                {
+                    return iterator.Current;
+                }
+            }
+            return null;
+        }
+
         public string GetStandardDate(int id)
         {
-            IEnumerator<Note> iterator = dataBase.Table<Note>().GetEnumerator();
+            IEnumerator<Basket> iterator = dataBase.Table<Basket>().GetEnumerator();
             while (iterator.MoveNext())
             {
                 if (iterator.Current.Id == id)
@@ -133,9 +144,18 @@ namespace Diary.Model
             return null;
         }
 
+        private async void RecoverAsync(Basket basket)
+        {
+            await Task.Run(() =>
+            {
+                dataBase.Delete<Basket>(basket.Id);
+                StandardSteps();
+            });
+        }
+
         private void RewriteDate()
         {
-            IEnumerator<Note> iterator = Notes.GetEnumerator();
+            IEnumerator<Basket> iterator = Notes.GetEnumerator();
             while (iterator.MoveNext())
             {
                 iterator.Current.CreationOrEditingDate = GetDateExternal(iterator.Current.Id);
@@ -169,14 +189,14 @@ namespace Diary.Model
                 else if (DateTime.Now.ToString("dd") == "01" && Convert.ToInt32(allDate.Split(new char[] { '.', ' ' })[1]) == Convert.ToInt32(DateTime.Now.ToString("MM")) - 1)
                 {
                     Day day = new Day();
-                    Months month = (Months)Convert.ToInt32(allDate.Split(new char[] { '.', ' ' })[1]);
+                    Model.Months month = (Model.Months)Convert.ToInt32(allDate.Split(new char[] { '.', ' ' })[1]);
                     if (Convert.ToInt32(allDate.Split(new char[] { '.', ' ' })[0]) == day.GetNumberOfDaysInThisMonth(month + "", Convert.ToInt32(DateTime.Now.ToString("yyyy"))))
                     {
                         allDate = allDate.Remove(0, 5);
                         return "Вчера в" + allDate;
                     }
                 }
-                Months months = (Months)Convert.ToInt32(allDate.Split(new char[] { '.', ' ' })[1]);
+                Model.Months months = (Model.Months)Convert.ToInt32(allDate.Split(new char[] { '.', ' ' })[1]);
                 if (allDate.Split(new char[] { '.', ' ' })[0][0] == '0')
                 {
                     return allDate.Split(new char[] { '.', ' ' })[0][1] + " " + months + " в " + allDate.Split(new char[] { ' ' })[1];
@@ -193,8 +213,8 @@ namespace Diary.Model
 
         private void BubbleSortForDates()
         {
-            List<Note> notes = new List<Note>();
-            IEnumerator<Note> iterator = Notes.GetEnumerator();
+            List<Basket> notes = new List<Basket>();
+            IEnumerator<Basket> iterator = Notes.GetEnumerator();
             while (iterator.MoveNext())
             {
                 notes.Add(iterator.Current);
@@ -205,7 +225,7 @@ namespace Diary.Model
                 {
                     if (Convertation(notes[j].CreationOrEditingDate, 2) < Convertation(notes[j + 1].CreationOrEditingDate, 2))
                     {
-                        Note swapper = notes[j];
+                        Basket swapper = notes[j];
                         notes[j] = notes[j + 1];
                         notes[j + 1] = swapper;
                     }
@@ -213,7 +233,7 @@ namespace Diary.Model
                     {
                         if (Convertation(notes[j].CreationOrEditingDate, 1) < Convertation(notes[j + 1].CreationOrEditingDate, 1))
                         {
-                            Note swapper = notes[j];
+                            Basket swapper = notes[j];
                             notes[j] = notes[j + 1];
                             notes[j + 1] = swapper;
                         }
@@ -221,7 +241,7 @@ namespace Diary.Model
                         {
                             if (Convertation(notes[j].CreationOrEditingDate, 0) < Convertation(notes[j + 1].CreationOrEditingDate, 0))
                             {
-                                Note swapper = notes[j];
+                                Basket swapper = notes[j];
                                 notes[j] = notes[j + 1];
                                 notes[j + 1] = swapper;
                             }
@@ -229,7 +249,7 @@ namespace Diary.Model
                             {
                                 if (Convertation(notes[j].CreationOrEditingDate, 3) < Convertation(notes[j + 1].CreationOrEditingDate, 3))
                                 {
-                                    Note swapper = notes[j];
+                                    Basket swapper = notes[j];
                                     notes[j] = notes[j + 1];
                                     notes[j + 1] = swapper;
                                 }
@@ -237,7 +257,7 @@ namespace Diary.Model
                                 {
                                     if (Convertation(notes[j].CreationOrEditingDate, 4) < Convertation(notes[j + 1].CreationOrEditingDate, 4))
                                     {
-                                        Note swapper = notes[j];
+                                        Basket swapper = notes[j];
                                         notes[j] = notes[j + 1];
                                         notes[j + 1] = swapper;
                                     }
@@ -245,7 +265,7 @@ namespace Diary.Model
                                     {
                                         if (notes[j].Id < notes[j + 1].Id)
                                         {
-                                            Note swapper = notes[j];
+                                            Basket swapper = notes[j];
                                             notes[j] = notes[j + 1];
                                             notes[j + 1] = swapper;
                                         }
@@ -264,9 +284,9 @@ namespace Diary.Model
             return Convert.ToInt32(date.Split(new char[] { '.', ' ', ':' })[index]);
         }
 
-        private Note GetElementById(int id)
+        private Basket GetElementById(int id)
         {
-            IEnumerator<Note> iterator = Notes.GetEnumerator();
+            IEnumerator<Basket> iterator = Notes.GetEnumerator();
             while (iterator.MoveNext())
             {
                 if (id == iterator.Current.Id)
@@ -277,9 +297,9 @@ namespace Diary.Model
             return null;
         }
 
-        private Note GetElementByIndex(int index)
+        private Basket GetElementByIndex(int index)
         {
-            IEnumerator<Note> iterator = Notes.GetEnumerator();
+            IEnumerator<Basket> iterator = Notes.GetEnumerator();
             int counter = 0;
             while (iterator.MoveNext())
             {
@@ -292,20 +312,10 @@ namespace Diary.Model
             return null;
         }
 
-        private string GetPreparedTitle(string stringWhichItNeedUpgrade)
-        {
-            int index = 0;
-            while (stringWhichItNeedUpgrade.Split(new char[] { '\n' })[index].Replace("\r", "") == "")
-            {
-                index++;
-            }
-            return stringWhichItNeedUpgrade.Split(new char[] { '\n' })[index].Replace("\r", "");
-        }
-
         private void StandardSteps()
         {
-            Notes = dataBase.Table<Note>();
-            NumberOfNotes = dataBase.Table<Note>().Count();
+            Notes = dataBase.Table<Basket>();
+            NumberOfNotes = dataBase.Table<Basket>().Count();
             BubbleSortForDates();
             RewriteDate();
             storageNotes = Notes;

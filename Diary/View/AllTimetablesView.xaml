@@ -373,7 +373,7 @@
             <TextBox 
                 DockPanel.Dock="Top"
                 x:Name="Description" 
-                FontSize="12"
+                FontSize="16"
                 Padding="12"
                 TextWrapping="Wrap"
                 AcceptsReturn="True"

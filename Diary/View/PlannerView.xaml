@@ -36,12 +36,12 @@
                 </DockPanel>
             </StackPanel>
         </Button>
-        <Button Focusable="False" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="2" Background="BlanchedAlmond" Margin="1,0,-1,0">
+        <Button Focusable="False" Command="{Binding ViewGoals}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="685" Height="55" Grid.Row="2" Background="BlanchedAlmond" Margin="1,0,-1,0">
             <StackPanel Orientation="Vertical">
                 <TextBlock DockPanel.Dock="Top" Text="Цели" FontSize="19" HorizontalAlignment="Center"/>
                 <DockPanel HorizontalAlignment="Center">
                     <TextBlock DockPanel.Dock="Left" Text="Количество: " FontSize="12" HorizontalAlignment="Center"/>
-                    <TextBlock DockPanel.Dock="Right" Text="0" FontSize="12" HorizontalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding GoalsLogic.NumberOfGoals, UpdateSourceTrigger=PropertyChanged}" FontSize="12" HorizontalAlignment="Center"/>
                 </DockPanel>
             </StackPanel>
         </Button>

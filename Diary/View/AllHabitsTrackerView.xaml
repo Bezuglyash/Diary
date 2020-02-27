@@ -42,8 +42,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-
     </UserControl.Resources>
 
     <Grid>
@@ -248,5 +246,50 @@
                         Width="28"/>
                 </InlineUIContainer></TextBlock>
         </Button>
+
+        <Label 
+            Content="Трекер привычек" 
+            FontSize="19"
+            Focusable="False"
+            Foreground="Gray"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center" 
+            VerticalAlignment="Top"
+            Margin="382,34,134,0"
+            Height="34"/>
+
+        <Label
+            IsTabStop="False"
+            Foreground="Gray"
+            FontSize="19" 
+            Margin="377,140,115,419">
+            <Label.Resources>
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger  Binding="{Binding Count, UpdateSourceTrigger=PropertyChanged}" Value="0">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Resources>
+            <DockPanel Width="165" Height="79">
+                <TextBlock 
+                    FontSize="19" 
+                    DockPanel.Dock="Bottom"
+                    Foreground="Gray" 
+                    TextAlignment="Center"
+                    Text="Нет привычек"
+                    Height="32"/>
+                <TextBlock DockPanel.Dock="Top" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"><InlineUIContainer>
+                        <materialDesign:PackIcon 
+                            Kind="Text" 
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" 
+                            Height="40" 
+                            Width="55"/>
+                    </InlineUIContainer></TextBlock>
+            </DockPanel>
+        </Label>
     </Grid>
 </UserControl>

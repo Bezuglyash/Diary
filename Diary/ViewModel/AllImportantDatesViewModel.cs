@@ -57,7 +57,7 @@ namespace Diary.ViewModel
             selectedMonth = calendar.GetMonthNow();
             selectedYear = Convert.ToInt32(DateTime.Now.ToString("yyyy"));
             pastSelect = 0;
-            StandartActions(Convert.ToInt32(DateTime.Now.ToString("dd")));
+            StandardActions(Convert.ToInt32(DateTime.Now.ToString("dd")));
             dispatcher = Dispatcher.CurrentDispatcher;
             IsClose = false;
         }
@@ -133,7 +133,7 @@ namespace Diary.ViewModel
                     if (new MessageBoxViewModel("Вы действительно желаете удалить данное событие?", "Удаление").ShowMessage() == true)
                     {
                         importantDatesLogic.DeleteToList(EventText, ZeroOrNull(pastSelect) + pastSelect.ToString() + "." + calendar.GetNumberOfMonth(SelectedMonth));
-                        StandartActions(pastSelect);
+                        StandardActions(pastSelect);
                         Thread thread = new Thread(UpdateImportantDate);
                         thread.Start();
                     }
@@ -254,14 +254,14 @@ namespace Diary.ViewModel
 
         public bool IsClose { get; set; }
 
-        async private void WaitingNextStepAsync()
+        private async void WaitingNextStepAsync()
         {
             await Task.Run(() =>
             {
                 while (IsClose != true && newImportantDateViewModel.Condition != "Collapsed") { }
                 if (newImportantDateViewModel.Condition == "Collapsed")
                 {
-                    StandartActions(pastSelect);
+                    StandardActions(pastSelect);
                 }
             });
         }
@@ -412,7 +412,7 @@ namespace Diary.ViewModel
             }
         }
 
-        private void StandartActions(int day)
+        private void StandardActions(int day)
         {
             ViewCalendar();
             ViewEvents(day);

@@ -187,6 +187,7 @@
         <Border BorderThickness="0, 1, 1, 1" BorderBrush="Black" HorizontalAlignment="Left" Margin="570,51,0,0" VerticalAlignment="Top" Width="85">
             <Label Content="Воскресенье" Foreground="Red" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="85" Margin="0,0,-1,0"/>
         </Border>
+
         <ItemsControl Focusable="False" ItemsSource="{Binding DaysOfMonth, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Background="FloralWhite" Height="240" Margin="60,79,0,0" VerticalAlignment="Top" Width="595">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -252,6 +253,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
         <Label
             IsTabStop="False"
             Foreground="Gray"

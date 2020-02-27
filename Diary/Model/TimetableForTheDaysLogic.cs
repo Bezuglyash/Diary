@@ -156,8 +156,8 @@ namespace Diary.Model
 
         private void StandartActions()
         {
-            ListOfCases = this.dataBase.Table<TimetableForTheDay>();
-            NumberOfCases = this.dataBase.Table<TimetableForTheDay>().Count();
+            ListOfCases = dataBase.Table<TimetableForTheDay>();
+            NumberOfCases = dataBase.Table<TimetableForTheDay>().Count();
             timetablesForTheDay = new List<TimetableForTheDay>();
             if (NumberOfCases > 0)
             {

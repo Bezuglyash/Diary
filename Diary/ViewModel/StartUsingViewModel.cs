@@ -15,18 +15,19 @@ namespace Diary.ViewModel
         private string textHello;
         private DiaryLogic diaryLogic;
         private string userName;
-        private string checkString;
 
         public StartUsingViewModel() { }
+
         public StartUsingViewModel(DiaryLogic diaryLogic)
         {
             this.diaryLogic = diaryLogic;
             TextHello = "Приветствуем Вас в приложении \"Мой ежедневник\"!\nПредставьтесь, пожалуйста!";
             Color = (Brush)new BrushConverter().ConvertFromString("FloralWhite");
-            diaryLogic.NameUser = "";
+            UserName = "";
             Content = "...";
             IsEnabled = false;
             NotClosePassword = "Visible";
+            Status = "";
         }
 
         public string Content { get; set; }
@@ -38,7 +39,7 @@ namespace Diary.ViewModel
             get { return userName; }
             set
             {
-                checkString = value;
+                string checkString = value;
                 if (checkString.Contains(" ") == true)
                 {
                     bool isTwoSpace = false;
@@ -87,9 +88,9 @@ namespace Diary.ViewModel
                             {
                                 UserName = UserName.Remove(UserName.Length - 1, 1);
                             }
-                            TextHello = "Привет, " + UserName + "!\nВы можете установить пароль (рекомендуется) или продолжить без пароля!";
+                            TextHello = "Привет, " + UserName + "!\nВы можете установить пароль (рекомендуется) или продолжить без него!";
                             Content = "Продолжить без пароля";
-                            diaryLogic.NameUser = UserName;
+                            diaryLogic.AddName(UserName);
                             IsEnabled = true;
                             PasswordControl = new PasswordView();
                             PasswordControl.DataContext = new PasswordViewModel(diaryLogic);
@@ -108,16 +109,6 @@ namespace Diary.ViewModel
             }
         }
 
-
-        async public void CheckAsync()
-        {
-            await Task.Run(() => 
-            {
-                while (diaryLogic.UserPassword == null) { }
-                NotClosePassword = "Collapsed";
-            });
-        }
-
         public bool IsEnabled { get; set; }
 
         public Brush Color { get; set; }
@@ -130,12 +121,28 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    diaryLogic.SaveUser();
-                    NotClosePassword = "Collapsed";
+                    if (new MessageBoxViewModel("Без пароля повышается вероятность просмотра Ваших записей другими людьми! Хотите продолжить?", "Предупреждение").ShowMessage())
+                    {
+                        diaryLogic.AddIsHavePassword(0);
+                        Status = "Введено имя";
+                        NotClosePassword = "Collapsed";
+                    }
                 });
             }
         }
 
         public string NotClosePassword { get; set; }
+
+        public string Status { get; private set; }
+
+        private async void CheckAsync()
+        {
+            await Task.Run(() =>
+            {
+                while (diaryLogic.GetPassword() == null) { }
+                Status = "Введено имя и пароль";
+                NotClosePassword = "Collapsed";
+            });
+        }
     }
 }

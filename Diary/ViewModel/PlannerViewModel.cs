@@ -11,25 +11,32 @@ namespace Diary.ViewModel
     {
         private TimetableForTheDaysLogic timetableForTheDaysLogic;
         private HabitsTrackerLogic habitsTrackerLogic;
+        private GoalsLogic goalsLogic;
         private AllTimetablesViewModel allTimetablesViewModel;
         private AllHabitsTrackerViewModel allHabitsTrackerViewModel;
+        private AllGoalsViewModel allGoalsViewModel;
         private NewTimetableViewModel newTimetableViewModel;
         private NewHabitTrackerViewModel newHabitTrackerViewModel;
+        private NewGoalViewModel newGoalViewModel;
         private bool isClose;
 
         public PlannerViewModel() { }
 
-        public PlannerViewModel(TimetableForTheDaysLogic timetableForTheDaysLogic, HabitsTrackerLogic habitsTrackerLogic) 
+        public PlannerViewModel(TimetableForTheDaysLogic timetableForTheDaysLogic, HabitsTrackerLogic habitsTrackerLogic, GoalsLogic goalsLogic) 
         {
             this.timetableForTheDaysLogic = timetableForTheDaysLogic;
             TimetableForTheDaysLogic = this.timetableForTheDaysLogic;
             this.habitsTrackerLogic = habitsTrackerLogic;
             HabitsTrackerLogic = this.habitsTrackerLogic;
+            this.goalsLogic = goalsLogic;
+            GoalsLogic = this.goalsLogic;
         }
 
         public TimetableForTheDaysLogic TimetableForTheDaysLogic { get; set; }
 
         public HabitsTrackerLogic HabitsTrackerLogic { get; set; }
+
+        public GoalsLogic GoalsLogic { get; set; }
 
         public ICommand ViewTimetables
         {
@@ -53,6 +60,19 @@ namespace Diary.ViewModel
                     allHabitsTrackerViewModel = new AllHabitsTrackerViewModel(habitsTrackerLogic);
                     AddOrViewExisting = new AllHabitsTrackerView();
                     AddOrViewExisting.DataContext = allHabitsTrackerViewModel;
+                });
+            }
+        }
+
+        public ICommand ViewGoals
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    allGoalsViewModel = new AllGoalsViewModel(goalsLogic);
+                    AddOrViewExisting = new AllGoalsView();
+                    AddOrViewExisting.DataContext = allGoalsViewModel;
                 });
             }
         }
@@ -89,7 +109,9 @@ namespace Diary.ViewModel
             {
                 return new RelayCommand(() =>
                 {
-                    
+                    newGoalViewModel = new NewGoalViewModel(goalsLogic);
+                    AddOrViewExisting = new NewGoalView();
+                    AddOrViewExisting.DataContext = newGoalViewModel;
                 });
             }
         }
@@ -105,6 +127,10 @@ namespace Diary.ViewModel
                 if (allTimetablesViewModel != null)
                 {
                     allTimetablesViewModel.IsClose = isClose;
+                }
+                else if (allGoalsViewModel != null)
+                {
+                    allGoalsViewModel.IsClose = isClose;
                 }
             }
         }
