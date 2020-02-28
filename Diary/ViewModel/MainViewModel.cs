@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Diary.Model;
@@ -203,7 +204,6 @@ namespace Diary.ViewModel
             {
                 while (startUsingViewModel.Status == "") { }
                 Greeting = "Привет, " + diaryLogic.GetName() + "!";
-                diaryLogic.CreateDataBaseAndTables();
                 CreateLogicAsync();
             });
         }

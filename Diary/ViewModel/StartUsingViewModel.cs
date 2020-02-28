@@ -91,6 +91,7 @@ namespace Diary.ViewModel
                             TextHello = "Привет, " + UserName + "!\nВы можете установить пароль (рекомендуется) или продолжить без него!";
                             Content = "Продолжить без пароля";
                             diaryLogic.AddName(UserName);
+                            diaryLogic.CreateDataBaseAndTables();
                             IsEnabled = true;
                             PasswordControl = new PasswordView();
                             PasswordControl.DataContext = new PasswordViewModel(diaryLogic);

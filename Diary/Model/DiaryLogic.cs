@@ -43,30 +43,18 @@ namespace Diary.Model
             user.IsHavePassword = 1;
             try
             {
-                if (!dataBase.Table<User>().Any())
-                {
-                    AddDataAsync();
-                }
-                else
+                if (dataBase.Table<User>().Any())
                 {
                     UpdateDataAsync();
                 }
             }
-            catch (Exception)
-            {
-                dataBase = new SQLiteConnection(NAME_DATA_BASE, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create, true);
-                AddDataAsync();
-            }
+            catch (Exception) { }
         }
 
         public void AddIsHavePassword(int number)
         {
             user.IsHavePassword = number;
-            if (!dataBase.Table<User>().Any())
-            {
-                AddDataAsync();
-            }
-            else
+            if (dataBase.Table<User>().Any())
             {
                 UpdateDataAsync();
             }
@@ -100,15 +88,21 @@ namespace Diary.Model
             UpdateDataAsync();
         }
 
-        public void CreateDataBaseAndTables()
+        public async void CreateDataBaseAndTables()
         {
-            dataBase.CreateTable<User>();
-            dataBase.CreateTable<Note>();
-            dataBase.CreateTable<ImportantDate>();
-            dataBase.CreateTable<TimetableForTheDay>();
-            HabitsTrackerLogic.CreateXmlFile();
-            dataBase.CreateTable<Goal>();
-            dataBase.CreateTable<Basket>();
+            await Task.Run(() =>
+            {
+                dataBase = new SQLiteConnection(NAME_DATA_BASE, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create, true);
+                dataBase.CreateTable<User>();
+                dataBase.CreateTable<Note>();
+                dataBase.CreateTable<ImportantDate>();
+                new ImportantDatesLogic.ImportantDatesLogic(dataBase);
+                dataBase.CreateTable<TimetableForTheDay>();
+                HabitsTrackerLogic.CreateXmlFile();
+                dataBase.CreateTable<Goal>();
+                dataBase.CreateTable<Basket>();
+                AddDataAsync();
+            });
         }
 
         public SQLiteConnection GetDataBase() { return dataBase; }

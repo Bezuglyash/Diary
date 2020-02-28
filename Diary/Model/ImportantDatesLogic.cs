@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Diary.Model.ImportantDatesLogic
 {
@@ -14,11 +15,11 @@ namespace Diary.Model.ImportantDatesLogic
         public ImportantDatesLogic(SQLiteConnection dataBase)
         {
             this.dataBase = dataBase;
-            StandartActions();
+            StandardActions();
             importantDates = new List<ImportantDate>();
             if (NumberOfDates == 0)
             {
-                AutomaticFilling();
+                AutomaticFillingAsync();
             }
             else
             {
@@ -37,7 +38,7 @@ namespace Diary.Model.ImportantDatesLogic
             importantDate.Date = date;
             importantDate.IsAnnually = isAnnually;
             dataBase.Insert(importantDate);
-            StandartActions();
+            StandardActions();
         }
 
         public void UpdateData(int id, string eventOfThisDate, string date, int isAnnually)
@@ -47,13 +48,13 @@ namespace Diary.Model.ImportantDatesLogic
             importantDate.Event = eventOfThisDate;
             importantDate.IsAnnually = isAnnually;
             dataBase.Update(importantDate);
-            StandartActions();
+            StandardActions();
         }
 
         public void DeleteEvent(string eventOfThisDate, string date)
         {
             dataBase.Delete<ImportantDate>(GetElementByEventAndDate(eventOfThisDate, date).Id);
-            StandartActions();
+            StandardActions();
         }
 
         public List<string> GetEvents (string date, int year, bool isLastSundayInThisNovember = false)
@@ -217,7 +218,7 @@ namespace Diary.Model.ImportantDatesLogic
 
         public void UpdateDataAndList()
         {
-            StandartActions();
+            StandardActions();
             importantDates.Clear();
             ToList();
         }
@@ -267,59 +268,62 @@ namespace Diary.Model.ImportantDatesLogic
             return null;
         }
 
-        private void StandartActions()
+        private void StandardActions()
         {
-            ImportantDates = this.dataBase.Table<ImportantDate>();
-            NumberOfDates = this.dataBase.Table<ImportantDate>().Count();
+            ImportantDates = dataBase.Table<ImportantDate>();
+            NumberOfDates = dataBase.Table<ImportantDate>().Count();
         }
 
-        private void AutomaticFilling()
+        private async void AutomaticFillingAsync()
         {
-            ImportantDate importantDate = new ImportantDate();
-            importantDate.Event = "Новый год";
-            importantDate.Date = "01.01.1900";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "Рождество";
-            importantDate.Date = "07.01.1900";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "День всех влюблённых";
-            importantDate.Date = "14.02.1900";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "День защитника Отечества";
-            importantDate.Date = "23.02.1900";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "Международный женский день";
-            importantDate.Date = "08.03.1900";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "Праздник Весны и Труда";
-            importantDate.Date = "01.05.1900";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "День Победы";
-            importantDate.Date = "09.05.1945";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "День России";
-            importantDate.Date = "12.06.1992";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "День знаний";
-            importantDate.Date = "01.09.1984";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "День народного единства";
-            importantDate.Date = "04.11.2005";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
-            importantDate.Event = "День матери";
-            importantDate.Date = "24 25 26 27 28 29 30.11.1998";
-            importantDate.IsAnnually = 1;
-            dataBase.Insert(importantDate);
+            await Task.Run(() =>
+            {
+                ImportantDate importantDate = new ImportantDate();
+                importantDate.Event = "Новый год";
+                importantDate.Date = "01.01.1900";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "Рождество";
+                importantDate.Date = "07.01.1900";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "День всех влюблённых";
+                importantDate.Date = "14.02.1900";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "День защитника Отечества";
+                importantDate.Date = "23.02.1900";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "Международный женский день";
+                importantDate.Date = "08.03.1900";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "Праздник Весны и Труда";
+                importantDate.Date = "01.05.1900";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "День Победы";
+                importantDate.Date = "09.05.1945";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "День России";
+                importantDate.Date = "12.06.1992";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "День знаний";
+                importantDate.Date = "01.09.1984";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "День народного единства";
+                importantDate.Date = "04.11.2005";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+                importantDate.Event = "День матери";
+                importantDate.Date = "24 25 26 27 28 29 30.11.1998";
+                importantDate.IsAnnually = 1;
+                dataBase.Insert(importantDate);
+            });
         }
     }
 }
